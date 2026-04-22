@@ -1,1 +1,1 @@
-#KAVA: Karier AI Validasi Asisten
+KAVA: Karier AI Validasi Asisten
