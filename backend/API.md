@@ -4,32 +4,30 @@
 
 ---
 
-## Format Response Standar
+## Standard Response Format
 
-Semua response dari backend menggunakan format berikut:
-
-**Sukses:**
+**Success:**
 ```json
 {
   "status": "success",
-  "message": "Pesan sukses",
+  "message": "Success message",
   "data": { ... }
 }
 ```
 
-**Gagal (Client Error):**
+**Client Error:**
 ```json
 {
   "status": "failed",
-  "message": "Pesan error"
+  "message": "Error message"
 }
 ```
 
-**Error Server:**
+**Server Error:**
 ```json
 {
   "status": "error",
-  "message": "Terjadi kesalahan pada server"
+  "message": "Internal server error"
 }
 ```
 
@@ -53,7 +51,7 @@ Response `201`:
 ```json
 {
   "status": "success",
-  "message": "Registrasi berhasil. Cek email untuk kode verifikasi.",
+  "message": "Registration successful. Please check your email for the verification code.",
   "data": {
     "user": {
       "id": "uuid",
@@ -64,17 +62,17 @@ Response `201`:
 }
 ```
 
-Error `409` - email sudah terdaftar:
+Error `409` - email already registered:
 ```json
 {
   "status": "failed",
-  "message": "Email sudah terdaftar"
+  "message": "Email already registered"
 }
 ```
 
 ---
 
-### 2. Verifikasi Email
+### 2. Verify Email
 **`POST /users/verify`**
 
 Request:
@@ -89,15 +87,15 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Email berhasil diverifikasi"
+  "message": "Email successfully verified"
 }
 ```
 
-Error `400` - kode salah:
+Error `400` - invalid code:
 ```json
 {
   "status": "failed",
-  "message": "Kode verifikasi tidak valid"
+  "message": "Invalid verification code"
 }
 ```
 
@@ -118,7 +116,7 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Login berhasil",
+  "message": "Login successful",
   "data": {
     "accessToken": "eyJhbGci...",
     "refreshToken": "eyJhbGci..."
@@ -126,31 +124,31 @@ Response `200`:
 }
 ```
 
-Error `401` - email/password salah:
+Error `401` - wrong email/password:
 ```json
 {
   "status": "failed",
-  "message": "Email atau password salah"
+  "message": "Invalid email or password"
 }
 ```
 
-Error `403` - akun belum diverifikasi:
+Error `403` - account not verified:
 ```json
 {
   "status": "failed",
-  "message": "Akun belum diverifikasi. Cek email kamu."
+  "message": "Account not verified. Please check your email."
 }
 ```
 
 ---
 
-### 4. Login dengan Google
+### 4. Login with Google
 **`POST /authentications/google`**
 
 Request:
 ```json
 {
-  "idToken": "token_dari_google_sdk"
+  "idToken": "token_from_google_sdk"
 }
 ```
 
@@ -158,7 +156,7 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Login dengan Google berhasil",
+  "message": "Google login successful",
   "data": {
     "accessToken": "eyJhbGci...",
     "refreshToken": "eyJhbGci..."
@@ -182,7 +180,7 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Access token berhasil diperbarui",
+  "message": "Access token successfully refreshed",
   "data": {
     "accessToken": "eyJhbGci..."
   }
@@ -205,7 +203,7 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Logout berhasil"
+  "message": "Logout successful"
 }
 ```
 
@@ -213,12 +211,12 @@ Response `200`:
 
 ## User
 
-> Semua endpoint di bawah ini membutuhkan header:
+> All endpoints below require the following header:
 > ```
 > Authorization: Bearer <accessToken>
 > ```
 
-### 7. Get Profil
+### 7. Get Profile
 **`GET /users/me`**
 
 Response `200`:
@@ -238,14 +236,14 @@ Response `200`:
 
 ---
 
-### 8. Ganti Password
+### 8. Update Password
 **`PUT /users/password`**
 
 Request:
 ```json
 {
   "oldPassword": "password123",
-  "newPassword": "passwordbaru456"
+  "newPassword": "newpassword456"
 }
 ```
 
@@ -253,28 +251,28 @@ Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Password berhasil diperbarui"
+  "message": "Password successfully updated"
 }
 ```
 
-Error `400` - password lama salah:
+Error `400` - wrong old password:
 ```json
 {
   "status": "failed",
-  "message": "Password lama tidak sesuai"
+  "message": "Old password is incorrect"
 }
 ```
 
 ---
 
-### 9. Hapus Akun
+### 9. Delete Account
 **`DELETE /users/me`**
 
 Response `200`:
 ```json
 {
   "status": "success",
-  "message": "Akun berhasil dihapus"
+  "message": "Account successfully deleted"
 }
 ```
 
@@ -282,16 +280,37 @@ Response `200`:
 
 ## CV Analysis (Coming Soon)
 
+The following endpoint will be available in week 2:
 
-## HTTP Status Code yang Digunakan
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/cv/analyze` | Upload CV and get analysis result |
 
-| Code | Arti |
-|------|------|
-| `200` | Sukses |
-| `201` | Sukses membuat data baru |
-| `400` | Request tidak valid |
-| `401` | Tidak terautentikasi |
-| `403` | Terautentikasi tapi tidak diizinkan |
-| `404` | Data tidak ditemukan |
-| `409` | Konflik (misal: email sudah ada) |
-| `500` | Error server |
+Response format will be confirmed after coordination with the AI Engineer team.
+
+---
+
+## How to Use Tokens in FE
+
+1. After login, store `accessToken` and `refreshToken`
+2. For every authenticated request, add the header:
+   ```
+   Authorization: Bearer <accessToken>
+   ```
+3. If you receive a `401` response, use `PUT /authentications/refresh` to get a new `accessToken`
+4. If the refresh token is also expired, redirect the user to the login page
+
+---
+
+## HTTP Status Codes
+
+| Code | Meaning |
+|------|---------|
+| `200` | Success |
+| `201` | Successfully created |
+| `400` | Invalid request |
+| `401` | Unauthenticated |
+| `403` | Authenticated but not authorized |
+| `404` | Data not found |
+| `409` | Conflict (e.g. email already exists) |
+| `500` | Server error |
