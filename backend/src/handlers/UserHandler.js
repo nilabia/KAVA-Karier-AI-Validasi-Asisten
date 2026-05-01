@@ -4,9 +4,7 @@ const UserHandler = {
   async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const { user, verificationCode } = await UserService.register({ name, email, password });
-
-      
+      const { user } = await UserService.register({ name, email, password });
 
       res.status(201).json({
         status: 'success',
@@ -23,7 +21,7 @@ const UserHandler = {
       const { email, code } = req.body;
       const result = await UserService.verifyEmail({ email, code });
 
-      res.json({ status: 'success', message: result.message });
+      res.status(200).json({ status: 'success', message: result.message });
     } catch (error) {
       next(error);
     }
@@ -32,7 +30,7 @@ const UserHandler = {
   async getMe(req, res, next) {
     try {
       const user = await UserService.getUserById(req.user.id);
-      res.json({ status: 'success', data: { user } });
+      res.status(200).json({ status: 'success', data: { user } });
     } catch (error) {
       next(error);
     }
@@ -42,7 +40,7 @@ const UserHandler = {
     try {
       const { oldPassword, newPassword } = req.body;
       await UserService.updatePassword(req.user.id, { oldPassword, newPassword });
-      res.json({ status: 'success', message: 'Password successfully updated' });
+      res.status(200).json({ status: 'success', message: 'Password successfully updated' });
     } catch (error) {
       next(error);
     }
@@ -51,7 +49,7 @@ const UserHandler = {
   async deleteAccount(req, res, next) {
     try {
       await UserService.deleteUser(req.user.id);
-      res.json({ status: 'success', message: 'Account successfully deleted' });
+      res.status(200).json({ status: 'success', message: 'Account successfully deleted' });
     } catch (error) {
       next(error);
     }
