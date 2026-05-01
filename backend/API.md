@@ -278,18 +278,6 @@ Response `200`:
 
 ---
 
-## CV Analysis (Coming Soon)
-
-The following endpoint will be available in week 2:
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/cv/analyze` | Upload CV and get analysis result |
-
-Response format will be confirmed after coordination with the AI Engineer team.
-
----
-
 ## How to Use Tokens in FE
 
 1. After login, store `accessToken` and `refreshToken`
