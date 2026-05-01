@@ -1,8 +1,11 @@
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+const { OAuth2Client } = require('google-auth-library');
 const pool = require('../utils/database');
 const NotFoundError = require('../exceptions/NotFoundError');
 const ClientError = require('../exceptions/ClientError');
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const UserService = {
   async register({ name, email, password }) {
@@ -28,40 +31,49 @@ const UserService = {
   },
 
   async loginWithGoogle(idToken) {
-  const ticket = await client.verifyIdToken({
-    idToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-  const payload = ticket.getPayload();
-  const { sub: googleId, email, name } = payload;
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name } = payload;
 
-  const existing = await pool.query(
-    'SELECT id FROM users WHERE email = $1',
-    [email]
-  );
-
-  let userId;
-
-  if (existing.rows.length > 0) {
-    userId = existing.rows[0].id;
-  } else {
-    const { v4: uuidv4 } = require('uuid');
-    const id = uuidv4();
-    const result = await pool.query(
-      `INSERT INTO users (id, name, email, google_id, auth_provider, is_verified)
-       VALUES ($1, $2, $3, $4, 'google', true) RETURNING id`,
-      [id, name, email, googleId]
+    const existing = await pool.query(
+      'SELECT id, auth_provider FROM users WHERE email = $1',
+      [email]
     );
-    userId = result.rows[0].id;
-  }
 
-  return userId;
-},
+    let userId;
+
+    if (existing.rows.length > 0) {
+      const existingUser = existing.rows[0];
+
+   
+      if (existingUser.auth_provider !== 'google') {
+        throw new ClientError(
+          'This email is already registered with a password. Please login with your email and password.',
+          409
+        );
+      }
+
+      userId = existingUser.id;
+    } else {
+      const id = uuidv4();
+      const result = await pool.query(
+        `INSERT INTO users (id, name, email, google_id, auth_provider, is_verified)
+         VALUES ($1, $2, $3, $4, 'google', true) RETURNING id`,
+        [id, name, email, googleId]
+      );
+      userId = result.rows[0].id;
+    }
+
+    return userId;
+  },
 
   async verifyEmail({ email, code }) {
     const result = await pool.query(
-      'SELECT id, verification_code FROM users WHERE email = $1',
+      'SELECT id, verification_code, is_verified FROM users WHERE email = $1',
       [email]
     );
     if (result.rows.length === 0) {
@@ -69,6 +81,11 @@ const UserService = {
     }
 
     const user = result.rows[0];
+
+    if (user.is_verified) {
+      throw new ClientError('Email is already verified', 400);
+    }
+
     if (user.verification_code !== code) {
       throw new ClientError('Verification code is not valid', 400);
     }
