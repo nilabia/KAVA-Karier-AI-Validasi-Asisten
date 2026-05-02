@@ -1,14 +1,17 @@
 const UserService = require('../services/UserService');
+const { sendVerificationEmail } = require('../utils/mailer');
 
 const UserHandler = {
   async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const { user } = await UserService.register({ name, email, password });
+      const { user, verificationCode } = await UserService.register({ name, email, password });
+
+      await sendVerificationEmail(email, name, verificationCode);
 
       res.status(201).json({
         status: 'success',
-        message: 'Registration successful. Check your email for the verification code.',
+        message: 'Registration successful. Please check your email for the verification code.',
         data: { user },
       });
     } catch (error) {
