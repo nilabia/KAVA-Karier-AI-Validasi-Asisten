@@ -154,15 +154,15 @@ export default function AuthPage({ type = "signin" }) {
         <GoogleOAuthProvider clientId = { clientId }>        
             <div className="min-h-full flex flex-col">
                 <header>
-                    <img src={logo} alt="KAVA | Karier AI Validasi Asisten" className="h-8" style={{marginLeft:"23px"}}/>
+                    <img src={logo} alt="KAVA | Karier AI Validasi Asisten" className="h-8 ml-6"/>
                 </header>
             
                 <div className="w-full flex-1 flex items-center justify-center p-6">
-                    <div className="w-full max-w-md bg-gray/30 backdrop-blur-md rounded-[20px] shadow-2xl border border-white/5 p-4 my-6">
+                    <div className="w-full max-w-md bg-gray/30 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-4 my-6">
                         
                         <div className="flex border-[1.5px] border-white rounded-xl mt-6 mx-5 p-1">
-                            <button onClick={() => switchTab("login")} className={`flex-1 py-2 rounded-lg font-semibold text-2xl ${tab === "login" ? "bg-white text-[#0b1e42]" : "text-white"}`}>LOGIN</button>
-                            <button onClick={() => switchTab("register")} className={`flex-1 py-2 rounded-lg font-semibold text-2xl ${tab === "register" ? "bg-white text-[#0b1e42]" : "text-white"}`}>REGISTER</button>
+                            <button onClick={() => switchTab("login")} className={`flex-1 py-2 rounded-lg font-semibold text-lg md:text-2xl ${tab === "login" ? "bg-white text-[#0b1e42]" : "text-white"}`}>LOGIN</button>
+                            <button onClick={() => switchTab("register")} className={`flex-1 py-2 rounded-lg font-semibold text-lg md:text-2xl ${tab === "register" ? "bg-white text-[#0b1e42]" : "text-white"}`}>REGISTER</button>
                         </div>
                         
                         {errorMessage && (
@@ -185,7 +185,7 @@ export default function AuthPage({ type = "signin" }) {
                         <form onSubmit={ handleSubmit } key={tab}>
                             {tab === "login" && step === 1 && (
                                 <div className="relative flex items-center justify-center mt-10 mb-7">
-                                    <div className="flex-1 h-px bg-white/30 ml-5 mr-30"></div>
+                                    <div className="flex-1 h-px bg-white/30 ml-5 mr-24"></div>
                                     <span className="absolute px-4 text-[10px] text-white/80 tracking-widest font-medium">
                                         ATAU EMAIL
                                     </span>
