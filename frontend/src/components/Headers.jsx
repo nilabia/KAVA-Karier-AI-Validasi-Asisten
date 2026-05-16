@@ -3,12 +3,15 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { FaSignOutAlt, FaUserCircle, FaUser } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
+import PropTypes from "prop-types";
 
 export default function Headers({ withNav = false }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const isLoggedIn = !!localStorage.getItem("accessToken");
+    const shouldShowNav = withNav && isLoggedIn;
+    
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
@@ -31,7 +34,7 @@ return (
                 />
             </Link>
             
-            {withNav && (
+            {shouldShowNav && (
                 <div className="relative mr-6">
                     <button
                         className="p-2 flex items-center text-white hover:text-blue-300 transition-colors focus:outline-none"
@@ -67,7 +70,7 @@ return (
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         <FaUser className="mr-2 text-blue-400" size={14}/>
-                                        <span>Profile</span>
+                                        <span>Akun</span>
                                     </Link>
                                     
                                     <button
@@ -75,7 +78,7 @@ return (
                                         className="w-full flex items-center px-5 py-4 md:py-3 text-red-300 hover:bg-red-600/30 transition-colors border-t border-white/12"
                                     >
                                         <FaSignOutAlt className="mr-2" size={14} />
-                                        <span>Logout</span>
+                                        <span>Keluar</span>
                                     </button>
                                 </div>
                             </div>
@@ -85,4 +88,8 @@ return (
             )}
         </header>
     );
+}
+
+Headers.propTypes = {
+    withNav: PropTypes.bool
 }

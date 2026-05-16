@@ -4,7 +4,7 @@ import AuthPage from './pages/AuthPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
-import EditProfilePage from './pages/EditProfilePage';
+import ProfilePage from './pages/ProfilePage';
 import PublicLayout from './layouts/PublicLayout';
 import RegisterForm from '../src/authForm/RegisterForm';
 import LoginForm from '../src/authForm/LoginForm';
@@ -37,7 +37,7 @@ function App() {
 
             <Route path="/profile" element={
               <ProtectedRoute>
-                <EditProfilePage/>
+                <ProfilePage/>
               </ProtectedRoute>
             } />
           </Route>

@@ -6,10 +6,13 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 export default function LoginForm(){
     const [email, setEmail] = useState("");
     const navigate = useNavigate();
-    const { isLoading, setIsLoading, errorMessage, setErrorMessage } = useOutletContext();
+    const { isLoading, setIsLoading, isGoogleLoading, errorMessage, setErrorMessage } = useOutletContext();
     
     const handleLogin = async(event) => {
         event.preventDefault();
+        setErrorMessage("");
+        if (isLoading || isGoogleLoading)
+            return;
         setErrorMessage("");
         setIsLoading(true);
 
@@ -54,7 +57,8 @@ export default function LoginForm(){
                                 localStorage.setItem("login_email", e.target.value);
                             }}
                             className={inputClass}
-                            required/>
+                            required
+                        />
                     </div>
 
                     <div>
@@ -67,19 +71,20 @@ export default function LoginForm(){
                                 id="password"
                                 name="password"
                                 type="password"
-                                minLength={6}
+                                minLength={8}
                                 className={inputClass}
-                                required/>
+                                required
+                            />
                         </div>
                     </div>
                     
                     <div className="mt-4">
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || isGoogleLoading}
                             className="w-full flex items-center justify-center bg-white text-[#0b1e42] rounded-[20px] p-2 mt-8 mb-6 cursor-pointer hover:scale-101 hover:bg-[#A8F3FF] transition active:scale-95 font-bold text-xl"
                             >
-                                {isLoading ? "MEMPROSES..." : "LOGIN" }
+                                {isLoading ? "Memproses..." : "LOGIN" }
                         </button>
                     </div>
                 </div>

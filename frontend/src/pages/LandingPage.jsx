@@ -5,13 +5,6 @@ import { useEffect } from "react";
 export default function LandingPage() {
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const token = localStorage.getItem("accessToken");
-    //     if (token) {
-    //         navigate("/dashboard", {replace: true});
-    //     }
-    // }, [navigate]);
-
     const handleStart = () => {
         const token = localStorage.getItem("accessToken");
         if (token) {

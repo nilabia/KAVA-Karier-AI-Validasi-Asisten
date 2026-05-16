@@ -17,6 +17,10 @@ body,
     min-height: 100%;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 body {
     font-family: var(--font-quicksand);
     min-height: 100vh;

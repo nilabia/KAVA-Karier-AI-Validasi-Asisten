@@ -3,16 +3,18 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { loginWithGoogle } from '../services/auth';
 import { FcGoogle } from 'react-icons/fc';
+import PropTypes from "prop-types";
 
 export default function AuthPage({ type = "signin" }) {
     const [step, setStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleGoogleSuccess = async (credentialResponse) => {
-        setIsLoading(true);
+        setIsGoogleLoading(true);
         setErrorMessage("");
         try {
             const result = await loginWithGoogle(credentialResponse.credential);
@@ -25,9 +27,9 @@ export default function AuthPage({ type = "signin" }) {
                 setErrorMessage(result.message || "Gagal login dengan Google.");
             } 
         } catch (error) {
-            setIsLoading("Terjadi kesalahan koneksi ke server.");
+            setErrorMessage("Terjadi kesalahan koneksi ke server.");
         } finally {
-            setIsLoading(false);
+            setIsGoogleLoading(false);
         }
     };
 
@@ -50,11 +52,9 @@ export default function AuthPage({ type = "signin" }) {
         }
     }, [location.pathname]);
 
-    
-
     return (         
         <div className="w-full flex-1 flex items-center justify-center p-6 mt-5">
-            <div className="w-full max-w-md bg-gray/30 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-4 my-6">    
+            <div className="w-full max-w-md bg-gray-500/10 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-4 my-6">    
                 <div className="flex border-[1.5px] border-white rounded-xl mt-6 mx-5 p-1">
                     <NavLink
                         to="/auth/login"
@@ -79,15 +79,18 @@ export default function AuthPage({ type = "signin" }) {
                         <div className="absolute inset-x-5 flex items-center justify-center gap-3 bg-white rounded-[20px] p-2 shadow-md border border-gray-200 pointer-events-none">
                             <FcGoogle size={20}/>
                             <span className="font-quicksand font-bold text-[#0b1e42]">
-                                {isLoading ? "Memproses..." : "Masuk dengan Google"}
+                                {isGoogleLoading ? "Memproses..." : "Masuk dengan Google"}
                             </span>
                         </div>
-                        <div className="opacity-0 z-10 cursor-pointer w-full overflow-hidden flex justify-center">
+                        <div className={`opacity-0 z-10 cursor-pointer w-full overflow-hidden flex justify-center
+                            ${(isLoading || isGoogleLoading) ? "pointer-events-none" : ""}`
+                        }>
                             <GoogleLogin
                                 onSuccess={handleGoogleSuccess}  
                                 onError={() => setErrorMessage("Login Google gagal.")}
                                 useOneTap 
                                 width="375px"
+                                disabled={isLoading || isGoogleLoading}
                             />
                         </div>
                     </div>
@@ -108,10 +111,21 @@ export default function AuthPage({ type = "signin" }) {
                             setStep,
                             isLoading,
                             setIsLoading,
+                            isGoogleLoading,
+                            setIsGoogleLoading,
                             errorMessage,
-                            setErrorMessage }}/>
+                            setErrorMessage }}
+                        />
                 </div> 
             </div>
         </div>
     );
+}
+
+AuthPage.propTypes = {
+    type: PropTypes.oneOf([
+        "signin",
+        "signup",
+        "register"
+    ])
 }

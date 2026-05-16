@@ -30,7 +30,7 @@ const UserService = {
     return { user: result.rows[0], verificationCode };
   },
 
-  async loginWithGoogle(idToken) {
+  async loginWithGoogle(idToken) {get
     const ticket = await client.verifyIdToken({
       idToken,
       audience: process.env.GOOGLE_CLIENT_ID,

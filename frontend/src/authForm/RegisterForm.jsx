@@ -4,7 +4,7 @@ import { MdCheckCircle, MdEmail, MdLock, MdPerson } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function RegisterForm(){
-    const { step, setStep, isLoading, setIsLoading, errorMessage, setErrorMessage } = useOutletContext();
+    const { step, setStep, isLoading, setIsLoading, isGoogleLoading, errorMessage, setErrorMessage } = useOutletContext();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -30,7 +30,8 @@ export default function RegisterForm(){
 
     const handleRegister = async (event) => {
         event.preventDefault();
-        setErrorMessage("");
+        if (isLoading || isGoogleLoading)
+            return;
         
         const { name, email, password, confirmPassword } = formData;
         
@@ -51,7 +52,7 @@ export default function RegisterForm(){
                     step: 2
                 })
             );
-            step(2);
+            setStep(2);
         } else {
             setErrorMessage(result.message);
         }
@@ -145,11 +146,12 @@ export default function RegisterForm(){
                                         name="password"
                                         type="password"
                                         value={formData.password}
-                                        minLength={6}
+                                        minLength={8}
                                         className={inputClass}
                                         onChange={handleChange}
                                         readOnly={step === 2}
-                                        required={step === 1}/>
+                                        required={step === 1}
+                                        />
                                         {step === 2 && (
                                             <MdCheckCircle
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-green-300"
@@ -168,11 +170,12 @@ export default function RegisterForm(){
                                         name="confirmPassword"
                                         type="password"
                                         value={formData.confirmPassword}
-                                        minLength={6}
+                                        minLength={8}
                                         className={inputClass}
                                         onChange={handleChange}
                                         disabled={step === 2}
-                                        required={step === 1}/>
+                                        required={step === 1}
+                                        />
                                         {step === 2 && (
                                             <MdCheckCircle
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-green-300"
@@ -201,10 +204,10 @@ export default function RegisterForm(){
                     <div className="mx-5">
                         <button
                             type="submit"
-                            disabled={isLoading}
+                            disabled={isLoading || isGoogleLoading}
                             className="w-full flex items-center justify-center bg-white text-md text-[#0b1e42] rounded-[20px] p-2 mt-8 mb-6 cursor-pointer hover:scale-101 hover:bg-[#A8F3FF] transition active:scale-95 font-bold text-xl"
                         >
-                        {isLoading ? "MEMPROSES..." : step === 1 ? "LANJUTKAN" : "REGISTER"}
+                        {isLoading ? "Memproses..." : step === 1 ? "LANJUTKAN" : "REGISTER"}
                         </button>
                     </div>
                 </div>
