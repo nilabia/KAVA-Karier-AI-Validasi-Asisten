@@ -228,6 +228,7 @@ Response `200`:
       "id": "uuid",
       "name": "Kava",
       "email": "kava@email.com",
+      "has_password": true,
       "created_at": "2026-04-30T10:00:00.000Z"
     }
   }
@@ -306,6 +307,101 @@ Response `200`:
   "message": "Account successfully deleted"
 }
 ```
+
+### 11. Set Password (Google User)
+**`POST /users/password`**
+> Auth: Required (Bearer Token)
+
+Request:
+```json
+{
+  "newPassword": "newpassword456"
+}
+```
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Password successfully set"
+}
+```
+
+Error `400` - password already set:
+```json
+{
+  "status": "failed",
+  "message": "Password already set. Use PUT /users/password to update it"
+}
+```
+
+---
+
+### 12. Forgot Password
+**`POST /users/forgot-password`**
+> Auth: Not required
+
+Request:
+```json
+{
+  "email": "kava@email.com"
+}
+```
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Password reset link sent to your email"
+}
+```
+
+Error `404` - email not found:
+```json
+{
+  "status": "failed",
+  "message": "Email not found"
+}
+```
+
+Error `400` - Google account:
+```json
+{
+  "status": "failed",
+  "message": "This account uses Google login. Please set a password first via the profile page."
+}
+```
+
+---
+
+### 13. Reset Password
+**`POST /users/reset-password`**
+> Auth: Not required
+
+Request:
+```json
+{
+  "token": "token_from_email",
+  "newPassword": "newpassword456"
+}
+```
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Password successfully reset"
+}
+```
+
+Error `400` - invalid/expired token:
+```json
+{
+  "status": "failed",
+  "message": "Invalid or expired token"
+}
+```
+
 
 ---
 
