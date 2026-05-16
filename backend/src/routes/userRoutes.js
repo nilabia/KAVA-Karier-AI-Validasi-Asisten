@@ -7,7 +7,10 @@ const {
   registerSchema,
   verifyEmailSchema,
   updatePasswordSchema,
-  updateNameSchema
+  updateNameSchema,
+  setPasswordSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } = require('../validations/userValidation');
 
 router.post('/register', validate(registerSchema), UserHandler.register);
@@ -16,5 +19,8 @@ router.get('/me', authMiddleware, UserHandler.getMe);
 router.put('/password', authMiddleware, validate(updatePasswordSchema), UserHandler.updatePassword);
 router.delete('/me', authMiddleware, UserHandler.deleteAccount);
 router.put('/name', authMiddleware, validate(updateNameSchema), UserHandler.updateName);
+router.put('/set-password', authMiddleware, validate(setPasswordSchema), UserHandler.setPassword);
+router.post('/forgot-password', validate(forgotPasswordSchema), UserHandler.forgotPassword);
+router.post('/reset-password', validate(resetPasswordSchema), UserHandler.resetPassword);
 
 module.exports = router;
