@@ -67,6 +67,41 @@ const UserHandler = {
       next(error);
     }
   },
-};
+
+  async setPassword(req, res, next) {
+    try {
+      const { newPassword } = req.body;
+      await UserService.setPassword(req.user.id, newPassword);
+      res.status(200).json({ status: 'success', message: 'Password successfully set' });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async forgotPassword(req, res, next) {
+    try {
+      const { email } = req.body;
+      const { name, token } = await UserService.forgotPassword(email);
+      const { sendResetPasswordEmail } = require('../utils/mailer');
+      await sendResetPasswordEmail(email, name, token);
+      res.status(200).json({
+        status: 'success',
+        message: 'Password reset link sent to your email' });
+    } catch (error) {
+      next(error);
+    }
+  },
+      
+  async resetPassword(req, res, next) {
+    try {
+      const { token, newPassword } = req.body;
+      await UserService.resetPassword(token, newPassword);
+      res.status(200).json({ status: 'success', message: 'Password successfully reset' });
+    } catch (error) {
+      next(error);
+    }
+  },
+}
+    
 
 module.exports = UserHandler;

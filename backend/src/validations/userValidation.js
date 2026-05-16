@@ -56,10 +56,37 @@ const updateNameSchema = Joi.object({
     }),
 });
 
+const setPasswordSchema = Joi.object({
+    newPassword: Joi.string().min(8).max(100).required().messages({
+        'string.min': 'Password must be at least 8 characters',
+        'any.required': 'Password is required',
+    }),
+});
+
+const forgotPasswordSchema = Joi.object({
+    email: Joi.string().email().required().messages({
+        'string.email': 'Invalid email format',
+        'any.required': 'Email is required',
+    }),
+});
+
+const resetPasswordSchema = Joi.object({
+    token: Joi.string().required().messages({
+        'any.required': 'Token is required',
+    }),
+    newPassword: Joi.string().min(8).max(100).required().messages({
+        'string.min': 'Password must be at least 8 characters',
+        'any.required': 'Password is required',
+    }),
+});
+
 module.exports = {
     registerSchema,
     verifyEmailSchema,
     loginSchema,
     updatePasswordSchema,
-    updateNameSchema
+    updateNameSchema,
+    setPasswordSchema,
+    forgotPasswordSchema,
+    resetPasswordSchema,
 };

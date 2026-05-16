@@ -24,4 +24,20 @@ const sendVerificationEmail = async (email, name, code) => {
   });
 };
 
-module.exports = { sendVerificationEmail };
+const sendResetPasswordEmail = async (email, name, token) => {
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+  await transporter.sendMail({
+    from: '"KAVA" <${process.env.MAIL_FROM}>',
+    to: email,
+    subject: 'Reset Your KAVA Password',
+    html: `
+      <p>You requested to reset your password.</p>
+      <p>Click the link below to reset your password. This link will expire in 1 hour.</p>
+      <a href="${resetUrl}" style="padding: 10px 20px; background: #e63946; color: white; text-decoration: none; border-radius: 5px;">Reset Password</a>
+      <p>If you did not request this, please ignore this email.</p>
+    `,
+  });
+};
+
+
+module.exports = { sendVerificationEmail, sendResetPasswordEmail };
