@@ -49,6 +49,16 @@ const UserHandler = {
     }
   },
 
+  async updateName(req, res, next) {
+    try {
+      const { name } = req.body;
+      await UserService.updateName(req.user.id, name);
+      res.status(200).json({ status: 'success', message: 'Name successfully updated' });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async deleteAccount(req, res, next) {
     try {
       await UserService.deleteUser(req.user.id);

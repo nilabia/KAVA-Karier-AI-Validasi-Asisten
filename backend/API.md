@@ -263,9 +263,40 @@ Error `400` - wrong old password:
 }
 ```
 
----
+### 9. Update Name
+**`PUT /users/name`**
 
-### 9. Delete Account
+Request:
+```json
+{
+  "name": "Nama Baru"
+}
+```
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Name successfully updated",
+  "data": {
+    "user": {
+      "id": "uuid",
+      "name": "Nama Baru",
+      "email": "kava@email.com"
+    }
+  }
+}
+```
+
+Error `400` - name too short:
+```json
+{
+  "status": "failed",
+  "message": "\"name\" length must be at least 2 characters long"
+}
+```
+
+### 10. Delete Account
 **`DELETE /users/me`**
 
 Response `200`:
