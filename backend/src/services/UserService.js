@@ -163,6 +163,18 @@ const UserService = {
       [hashed, id]
     );
   },
+
+  async updateName(id, name) {
+    const result = await pool.query(
+      'UPDATE users SET name = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING id, name, email',
+      [name, id]
+    );
+    if (result.rows.length === 0) {
+      throw new NotFoundError('User not found');
+    }
+    return result.rows[0];
+  }
+
 };
 
 module.exports = UserService;

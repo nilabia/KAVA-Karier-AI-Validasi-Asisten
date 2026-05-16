@@ -2,11 +2,19 @@ const express = require('express');
 const router = express.Router();
 const UserHandler = require('../handlers/UserHandler');
 const authMiddleware = require('../middleware/authMiddleware');
+const validate = require('../middleware/validationMiddleware');
+const {
+  registerSchema,
+  verifyEmailSchema,
+  updatePasswordSchema,
+  updateNameSchema
+} = require('../validations/userValidation');
 
-router.post('/register', UserHandler.register);
-router.post('/verify', UserHandler.verifyEmail);
+router.post('/register', validate(registerSchema), UserHandler.register);
+router.post('/verify', validate(verifyEmailSchema), UserHandler.verifyEmail);
 router.get('/me', authMiddleware, UserHandler.getMe);
-router.put('/password', authMiddleware, UserHandler.updatePassword);
+router.put('/password', authMiddleware, validate(updatePasswordSchema), UserHandler.updatePassword);
 router.delete('/me', authMiddleware, UserHandler.deleteAccount);
+router.put('/name', authMiddleware, validate(updateNameSchema), UserHandler.updateName);
 
 module.exports = router;
