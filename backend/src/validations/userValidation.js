@@ -61,4 +61,5 @@ module.exports = {
     verifyEmailSchema,
     loginSchema,
     updatePasswordSchema,
+    updateNameSchema
 };
