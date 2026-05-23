@@ -17,4 +17,5 @@ jspm_packages/
 
 # OS files
 .DS_Store
-Thumbs.db
+Thumbs.db"__pycache__/" 
+"*.pyc" 
