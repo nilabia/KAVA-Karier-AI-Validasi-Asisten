@@ -402,8 +402,149 @@ Error `400` - invalid/expired token:
 }
 ```
 
+---
+## CV Analysis
+
+> All endpoints below require the following header:
+> ```
+> Authorization: Bearer <accessToken>
+> ```
+
+### 14. Analyze CV
+**`POST /api/cv/analyze`**
+
+Request (form-data):
+cv: <file.pdf> (max 5MB)
+
+Response `201`:
+```json
+{
+  "status": "success",
+  "message": "CV analyzed successfully",
+  "data": {
+    "analysis": {
+      "id": "uuid",
+      "user_id": "uuid",
+      "top_roles": [
+        { "rank": 1, "role": "Software & Web Development", "confidence": 74.91 },
+        { "rank": 2, "role": "Data Science & Engineering", "confidence": 11.56 },
+        { "rank": 3, "role": "Agriculture", "confidence": 4.68 }
+      ],
+      "skill_gap": {
+        "coverage_pct": 55,
+        "matched_skills": ["javascript", "html", "css"],
+        "missing_skills": ["jquery", "xml", "jenkins"],
+        "required_skills": ["javascript", "jquery", "html"],
+        "progress_bar_value": 0.55
+      },
+      "extracted_data": { ... },
+      "career_advice": "...",
+      "created_at": "2026-05-23T08:45:21.498Z"
+    }
+  }
+}
+```
+
+Error `400` - no file uploaded:
+```json
+{
+  "status": "failed",
+  "message": "No CV file uploaded"
+}
+```
+
+Error `422` - extraction failed:
+```json
+{
+  "status": "failed",
+  "message": "CV extraction failed"
+}
+```
+
+Error `502` - AI model error:
+```json
+{
+  "status": "error",
+  "message": "AI model prediction failed"
+}
+```
 
 ---
+
+### 15. Get Analysis History
+**`GET /api/cv/history`**
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "data": {
+    "analyses": [
+      {
+        "id": "uuid",
+        "top_roles": [...],
+        "skill_gap": {...},
+        "extracted_data": {...},
+        "career_advice": "...",
+        "created_at": "2026-05-23T08:45:21.498Z"
+      }
+    ]
+  }
+}
+```
+
+---
+
+### 16. Get Analysis Detail
+**`GET /api/cv/history/:id`**
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "data": {
+    "analysis": {
+      "id": "uuid",
+      "top_roles": [...],
+      "skill_gap": {...},
+      "extracted_data": {...},
+      "career_advice": "...",
+      "created_at": "2026-05-23T08:45:21.498Z"
+    }
+  }
+}
+```
+
+Error `404` - not found:
+```json
+{
+  "status": "failed",
+  "message": "CV analysis not found"
+}
+```
+
+---
+
+### 17. Get Career Advice
+**`GET /api/cv/advice/:id`**
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "data": {
+    "career_advice": "**Assessment:**\nYour profile shows..."
+  }
+}
+```
+
+Error `404` - not found:
+```json
+{
+  "status": "failed",
+  "message": "CV analysis not found"
+}
+```
 
 ## How to Use Tokens in FE
 
