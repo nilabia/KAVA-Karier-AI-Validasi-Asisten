@@ -23,19 +23,18 @@ SECTION_PATTERNS = {
         r"(?:summary|professional\s+summary|career\s+summary"
         r"|profile|professional\s+profile|career\s+profile"
         r"|executive\s+profile|objective|career\s+objective"
-        r"|professional\s+objective|about\s+me)"
+        r"|professional\s+objective|about\s+me|introduction)"
     ),
     "highlights": r"(?:highlights?|skill\s+highlights?|core\s+competencies|accomplishments?|qualifications?|core\s+qualifications?)",
-    "experience": r"(?:experience|work\s+experience|professional\s+experience|work\s+history|employment|employment\s+history)",
-    "education": r"(?:education|educational\s+background|academic\s+background|academic\s+qualifications?|qualifications?)",
-    "certification": r"(?:certifications?|certificates?|licenses?|credentials?|professional\s+development)",
-    "skills": r"(?:skills?|technical\s+skills?|core\s+skills?|competencies|expertise|proficiencies)",
+    "experience": r"(?:experience|work\s+experience|professional\s+experience|work\s+history|employment|employment\s+history|internship|internships?|projects?|project\s+experience)",
+    "education": r"(?:education|educational\s+background|academic\s+background|academic\s+qualifications?|qualifications?|academic|degree|university|college)",
+    "certification": r"(?:certifications?|certificates?|licenses?|credentials?|professional\s+development|courses?|training)",
+    "skills": r"(?:skills?|technical\s+skills?|core\s+skills?|competencies|expertise|proficiencies|technologies|tools?)",
 }
 
 SECTION_REGEX = re.compile(
-    r"(?im)^\s*(" + "|".join(SECTION_PATTERNS.values()) + r")\s*[:\-]?\s*$"
+    r"(?im)^\s*(" + "|".join(SECTION_PATTERNS.values()) + r")\s*[:\-]?\s*(?:\n|$)"
 )
-
 
 def _map_to_section(matched: str) -> str:
     for key, pattern in SECTION_PATTERNS.items():
