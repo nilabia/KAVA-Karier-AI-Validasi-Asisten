@@ -11,6 +11,7 @@ const {
   setPasswordSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  resendOtpSchema, 
 } = require('../validations/userValidation');
 const resendOtpSchema = Joi.object({
   email: Joi.string().email().required(),
