@@ -13,9 +13,7 @@ const {
   resetPasswordSchema,
   resendOtpSchema, 
 } = require('../validations/userValidation');
-const resendOtpSchema = Joi.object({
-  email: Joi.string().email().required(),
-});
+
 
 router.post('/register', validate(registerSchema), UserHandler.register);
 router.post('/verify', validate(verifyEmailSchema), UserHandler.verifyEmail);
