@@ -1,4 +1,5 @@
 const ClientError = require('../exceptions/ClientError');
+const xss = require('xss');
 
 const validate = (schema) => (req, res, next) => {
     Object.keys(req.body).forEach((key) => {
