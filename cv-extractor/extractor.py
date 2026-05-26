@@ -20,48 +20,44 @@ def basic_clean(text: str) -> str:
 
 SECTION_PATTERNS = {
     "summary": (
-<<<<<<< Updated upstream
         r"(?:summary|professional\s+summary|career\s+summary"
         r"|profile|professional\s+profile|career\s+profile"
         r"|executive\s+profile|objective|career\s+objective"
-        r"|professional\s+objective|about\s+me)"
-    ),
-    "highlights": r"(?:highlights?|skill\s+highlights?|core\s+competencies|accomplishments?|qualifications?|core\s+qualifications?)",
-    "experience": r"(?:experience|work\s+experience|professional\s+experience|work\s+history|employment|employment\s+history)",
-    "education": r"(?:education|educational\s+background|academic\s+background|academic\s+qualifications?|qualifications?)",
-    "certification": r"(?:certifications?|certificates?|licenses?|credentials?|professional\s+development)",
-    "skills": r"(?:skills?|technical\s+skills?|core\s+skills?|competencies|expertise|proficiencies)",
-=======
-        r"(?:summary|professional\s+summary|profile|about\s+me"
+        r"|professional\s+objective|about\s+me|introduction"
         r"|ringkasan|profil|tentang\s+saya|objektif)"
     ),
+    "highlights": (
+        r"(?:highlights?|skill\s+highlights?|core\s+competencies"
+        r"|accomplishments?|qualifications?|core\s+qualifications?"
+        r"|pencapaian|prestasi)"
+    ),
     "experience": (
-        r"(?:experience|work\s+experience|employment|work\s+history"
+        r"(?:experience|work\s+experience|professional\s+experience"
+        r"|work\s+history|employment|employment\s+history"
+        r"|internship|internships?|projects?|project\s+experience"
         r"|pengalaman|pengalaman\s+kerja|riwayat\s+pekerjaan)"
     ),
     "education": (
-        r"(?:education|academic|degree"
+        r"(?:education|educational\s+background|academic\s+background"
+        r"|academic\s+qualifications?|qualifications?|academic|degree"
+        r"|university|college"
         r"|pendidikan|riwayat\s+pendidikan|latar\s+belakang\s+pendidikan)"
     ),
     "certification": (
-        r"(?:certifications?|certificates?|licenses?"
+        r"(?:certifications?|certificates?|licenses?|credentials?"
+        r"|professional\s+development|courses?|training"
         r"|sertifikasi|sertifikat|lisensi|pelatihan)"
     ),
     "skills": (
-        r"(?:skills?|technical\s+skills?|competencies|expertise"
+        r"(?:skills?|technical\s+skills?|core\s+skills?|competencies"
+        r"|expertise|proficiencies|technologies|tools?"
         r"|keahlian|keterampilan|kompetensi|kemampuan)"
     ),
-    "highlights": (
-        r"(?:highlights?|core\s+competencies|accomplishments?"
-        r"|pencapaian|prestasi)"
-    ),
->>>>>>> Stashed changes
 }
 
 SECTION_REGEX = re.compile(
-    r"(?im)^\s*(" + "|".join(SECTION_PATTERNS.values()) + r")\s*[:\-]?\s*$"
+    r"(?im)^\s*(" + "|".join(SECTION_PATTERNS.values()) + r")\s*[:\-]?\s*(?:\n|$)"
 )
-
 
 def _map_to_section(matched: str) -> str:
     for key, pattern in SECTION_PATTERNS.items():
