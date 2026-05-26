@@ -12,6 +12,9 @@ const {
   forgotPasswordSchema,
   resetPasswordSchema,
 } = require('../validations/userValidation');
+const resendOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
 
 router.post('/register', validate(registerSchema), UserHandler.register);
 router.post('/verify', validate(verifyEmailSchema), UserHandler.verifyEmail);
@@ -22,5 +25,6 @@ router.put('/name', authMiddleware, validate(updateNameSchema), UserHandler.upda
 router.put('/set-password', authMiddleware, validate(setPasswordSchema), UserHandler.setPassword);
 router.post('/forgot-password', validate(forgotPasswordSchema), UserHandler.forgotPassword);
 router.post('/reset-password', validate(resetPasswordSchema), UserHandler.resetPassword);
+router.post('/resend-otp', validate(resendOtpSchema), UserHandler.resendOtp);
 
 module.exports = router;

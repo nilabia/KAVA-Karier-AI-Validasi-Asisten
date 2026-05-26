@@ -68,6 +68,8 @@ Error `409` - email already registered:
   "status": "failed",
   "message": "Email already registered"
 }
+
+> **Note:** If the email exists but has not been verified, the system will update the credentials and resend a new OTP instead of returning an error.
 ```
 
 ---
@@ -98,6 +100,44 @@ Error `400` - invalid code:
   "message": "Invalid verification code"
 }
 ```
+---
+
+### 2b. Resend OTP
+**`POST /users/resend-otp`**
+> Auth: Not required
+
+Request:
+```json
+{
+  "email": "kava@email.com"
+}
+```
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Verification code resent. Please check your email."
+}
+```
+
+Error `404` - email not found:
+```json
+{
+  "status": "failed",
+  "message": "Email not found"
+}
+```
+
+Error `400` - already verified:
+```json
+{
+  "status": "failed",
+  "message": "Email is already verified"
+}
+```
+
+
 
 ---
 

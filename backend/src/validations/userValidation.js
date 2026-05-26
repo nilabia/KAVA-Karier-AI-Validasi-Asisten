@@ -80,6 +80,10 @@ const resetPasswordSchema = Joi.object({
     }),
 });
 
+const resendOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
 module.exports = {
     registerSchema,
     verifyEmailSchema,
@@ -89,4 +93,5 @@ module.exports = {
     setPasswordSchema,
     forgotPasswordSchema,
     resetPasswordSchema,
+    resendOtpSchema,
 };

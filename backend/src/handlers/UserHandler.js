@@ -101,6 +101,21 @@ const UserHandler = {
       next(error);
     }
   },
+
+  async resendOtp(req, res, next) {
+    try {
+      const { email } = req.body;
+      const verificationCode = await UserService.resendOtp(email);
+      const { sendVerificationEmail } = require('../utils/mailer');
+      await sendVerificationEmail(email, verificationCode);
+      res.status(200).json({
+        status: 'success',
+        message: 'Verification code resent. Please check your email.',
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 }
     
 

@@ -9,16 +9,33 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const UserService = {
   async register({ name, email, password }) {
-    const check = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
-    if (check.rows.length > 0) throw new ClientError('Email is already registered', 409);
+    const check = await pool.query(
+      'SELECT id, is_verified FROM users WHERE email = $1',
+      [email]
+    );
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (check.rows.length > 0) {
+      const existing = check.rows[0];
+
+      if (existing.is_verified) {
+        throw new ClientError('Email is already registered', 409);
+      }
+
+      const result = await pool.query(
+        `UPDATE users SET name = $1, password = $2, verification_code = $3, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $4 RETURNING id, name, email`,
+        [name, hashedPassword, verificationCode, existing.id]
+      );
+      return { user: result.rows[0], verificationCode };
+    }
 
     const id = uuidv4();
-    const hashedPassword = await bcrypt.hash(password, 10); 
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
     const result = await pool.query(
       `INSERT INTO users (id, name, email, password, verification_code)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email`,
+      VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email`,
       [id, name, email, hashedPassword, verificationCode]
     );
     return { user: result.rows[0], verificationCode };
@@ -191,6 +208,22 @@ const UserService = {
       'UPDATE users SET password = $1, reset_token = null, reset_token_expires = null, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
       [hashed, id]
     );
+  },
+
+  async resendOtp(email) {
+    const result = await pool.query(
+      'SELECT id, is_verified FROM users WHERE email = $1',
+      [email]
+    );
+    if (result.rows.length === 0) throw new NotFoundError('Email not found');
+    if (result.rows[0].is_verified) throw new ClientError('Email is already verified', 400);
+
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    await pool.query(
+      'UPDATE users SET verification_code = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+      [verificationCode, result.rows[0].id]
+    );
+    return verificationCode;
   },
 };
 
