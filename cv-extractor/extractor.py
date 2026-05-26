@@ -23,13 +23,36 @@ SECTION_PATTERNS = {
         r"(?:summary|professional\s+summary|career\s+summary"
         r"|profile|professional\s+profile|career\s+profile"
         r"|executive\s+profile|objective|career\s+objective"
-        r"|professional\s+objective|about\s+me|introduction)"
+        r"|professional\s+objective|about\s+me|introduction"
+        r"|ringkasan|profil|tentang\s+saya|objektif)"
     ),
-    "highlights": r"(?:highlights?|skill\s+highlights?|core\s+competencies|accomplishments?|qualifications?|core\s+qualifications?)",
-    "experience": r"(?:experience|work\s+experience|professional\s+experience|work\s+history|employment|employment\s+history|internship|internships?|projects?|project\s+experience)",
-    "education": r"(?:education|educational\s+background|academic\s+background|academic\s+qualifications?|qualifications?|academic|degree|university|college)",
-    "certification": r"(?:certifications?|certificates?|licenses?|credentials?|professional\s+development|courses?|training)",
-    "skills": r"(?:skills?|technical\s+skills?|core\s+skills?|competencies|expertise|proficiencies|technologies|tools?)",
+    "highlights": (
+        r"(?:highlights?|skill\s+highlights?|core\s+competencies"
+        r"|accomplishments?|qualifications?|core\s+qualifications?"
+        r"|pencapaian|prestasi)"
+    ),
+    "experience": (
+        r"(?:experience|work\s+experience|professional\s+experience"
+        r"|work\s+history|employment|employment\s+history"
+        r"|internship|internships?|projects?|project\s+experience"
+        r"|pengalaman|pengalaman\s+kerja|riwayat\s+pekerjaan)"
+    ),
+    "education": (
+        r"(?:education|educational\s+background|academic\s+background"
+        r"|academic\s+qualifications?|qualifications?|academic|degree"
+        r"|university|college"
+        r"|pendidikan|riwayat\s+pendidikan|latar\s+belakang\s+pendidikan)"
+    ),
+    "certification": (
+        r"(?:certifications?|certificates?|licenses?|credentials?"
+        r"|professional\s+development|courses?|training"
+        r"|sertifikasi|sertifikat|lisensi|pelatihan)"
+    ),
+    "skills": (
+        r"(?:skills?|technical\s+skills?|core\s+skills?|competencies"
+        r"|expertise|proficiencies|technologies|tools?"
+        r"|keahlian|keterampilan|kompetensi|kemampuan)"
+    ),
 }
 
 SECTION_REGEX = re.compile(
