@@ -13,7 +13,7 @@ const UserService = {
     if (check.rows.length > 0) throw new ClientError('Email is already registered', 409);
 
     const id = uuidv4();
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10); 
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     const result = await pool.query(
@@ -24,7 +24,7 @@ const UserService = {
     return { user: result.rows[0], verificationCode };
   },
 
-  async loginWithGoogle(idToken) {get
+  async loginWithGoogle(idToken) {
     const ticket = await client.verifyIdToken({
       idToken,
       audience: process.env.GOOGLE_CLIENT_ID,
