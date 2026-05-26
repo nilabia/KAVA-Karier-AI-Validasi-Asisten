@@ -20,6 +20,7 @@ def basic_clean(text: str) -> str:
 
 SECTION_PATTERNS = {
     "summary": (
+<<<<<<< Updated upstream
         r"(?:summary|professional\s+summary|career\s+summary"
         r"|profile|professional\s+profile|career\s+profile"
         r"|executive\s+profile|objective|career\s+objective"
@@ -30,6 +31,31 @@ SECTION_PATTERNS = {
     "education": r"(?:education|educational\s+background|academic\s+background|academic\s+qualifications?|qualifications?)",
     "certification": r"(?:certifications?|certificates?|licenses?|credentials?|professional\s+development)",
     "skills": r"(?:skills?|technical\s+skills?|core\s+skills?|competencies|expertise|proficiencies)",
+=======
+        r"(?:summary|professional\s+summary|profile|about\s+me"
+        r"|ringkasan|profil|tentang\s+saya|objektif)"
+    ),
+    "experience": (
+        r"(?:experience|work\s+experience|employment|work\s+history"
+        r"|pengalaman|pengalaman\s+kerja|riwayat\s+pekerjaan)"
+    ),
+    "education": (
+        r"(?:education|academic|degree"
+        r"|pendidikan|riwayat\s+pendidikan|latar\s+belakang\s+pendidikan)"
+    ),
+    "certification": (
+        r"(?:certifications?|certificates?|licenses?"
+        r"|sertifikasi|sertifikat|lisensi|pelatihan)"
+    ),
+    "skills": (
+        r"(?:skills?|technical\s+skills?|competencies|expertise"
+        r"|keahlian|keterampilan|kompetensi|kemampuan)"
+    ),
+    "highlights": (
+        r"(?:highlights?|core\s+competencies|accomplishments?"
+        r"|pencapaian|prestasi)"
+    ),
+>>>>>>> Stashed changes
 }
 
 SECTION_REGEX = re.compile(
