@@ -7,7 +7,7 @@ const UserHandler = {
       const { name, email, password } = req.body;
       const { user, verificationCode } = await UserService.register({ name, email, password });
 
-      await sendVerificationEmail(email, name, verificationCode);
+      await sendVerificationEmail(email, verificationCode);
 
       res.status(201).json({
         status: 'success',

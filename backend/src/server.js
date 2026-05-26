@@ -28,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/users', userRoutes);
 app.use('/authentications', authRoutes);
+app.use('/api/cv', cvAnalysisRoutes);
 
 app.get('/', (req, res) => {
   res.json({ status: 'success', message: 'KAVA API is running!' });
