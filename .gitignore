@@ -19,3 +19,6 @@ jspm_packages/
 .DS_Store
 Thumbs.db"__pycache__/" 
 "*.pyc" 
+
+#Delete files
+CareerCoachService.js

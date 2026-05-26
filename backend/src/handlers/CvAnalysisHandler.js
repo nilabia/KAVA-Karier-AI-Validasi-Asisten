@@ -4,10 +4,6 @@ const fs = require('fs');
 const CvAnalysisService = require('../services/CvAnalysisService');
 const ClientError = require('../exceptions/ClientError');
 
-if (!process.env.CV_EXTRACTOR_URL) throw new Error('CV_EXTRACTOR_URL is not set');
-if (!process.env.AI_MODEL_URL) throw new Error('AI_MODEL_URL is not set');
-
-
 const CV_EXTRACTOR_URL = process.env.CV_EXTRACTOR_URL 
 const AI_MODEL_URL = process.env.AI_MODEL_URL 
 
@@ -42,9 +38,7 @@ async function analyzeCV(req, res, next) {
       has_education: extractedData.education ? 1 : 0,
     };
 
-    if (process.env.NODE_ENV !== 'production') {
-        console.log('[AI Model] Sending payload:', modelPayload);
-    }
+    console.log('[AI Model] Sending payload:', modelPayload);
 
     const modelRes = await fetch(`${AI_MODEL_URL}/api/predict-career`, {
       method: 'POST',
@@ -54,9 +48,7 @@ async function analyzeCV(req, res, next) {
     });
 
     const modelJson = await modelRes.json();
-    if (process.env.NODE_ENV !== 'production') {
-        console.log('[AI Model] Response:', JSON.stringify(modelJson).slice(0, 300));
-    }
+    console.log('[AI Model] Response:', JSON.stringify(modelJson).slice(0, 300));
 
     if (!modelRes.ok) throw new ClientError('AI model prediction failed', 502);
 

@@ -9,6 +9,7 @@ const cvAnalysisRoutes = require('./routes/cvAnalysisRoutes');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const multer = require('multer');
+const cvAnalysisRoutes = require('./routes/cvAnalysisRoutes');
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/api/cv', cvAnalysisRoutes);
 app.use('/users', userRoutes);
 app.use('/authentications', authRoutes);
 app.use('/api/cv', cvAnalysisRoutes);
@@ -67,6 +68,8 @@ app.use((err, req, res, next) => {
 app.use(errorMiddleware);
 
 const HOST = process.env.HOST 
+const PORT = process.env.PORT 
+const HOST = process.env.HOST
 const PORT = process.env.PORT 
 
 app.listen(PORT, HOST, () => {
