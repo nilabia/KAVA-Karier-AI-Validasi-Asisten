@@ -10,6 +10,7 @@ import RegisterForm from '../src/authForm/RegisterForm';
 import LoginForm from '../src/authForm/LoginForm';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -35,12 +36,20 @@ function App() {
               </ProtectedRoute>
             } />
 
+            <Route path="/dashboard/history/:id" element={
+              <ProtectedRoute>
+                <DashboardPage/>
+              </ProtectedRoute>
+            } />
+
             <Route path="/profile" element={
               <ProtectedRoute>
                 <ProfilePage/>
               </ProtectedRoute>
             } />
           </Route>
+
+          <Route path="*" element={<NotFoundPage/>} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>

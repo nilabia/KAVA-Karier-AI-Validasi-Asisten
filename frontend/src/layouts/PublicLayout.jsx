@@ -5,7 +5,7 @@ export default function PublicLayout() {
     const location = useLocation();
     return (
         <div className="min-h-screen flex flex-col">
-            <Headers withNav={location.pathname === "/dashboard", "/profile"}/>
+            <Headers withNav={location.pathname.startsWith("/dashboard") || location.pathname === "/profile"}/>
             <main className="flex-1">
                 <Outlet/>
             </main>

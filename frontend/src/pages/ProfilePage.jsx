@@ -162,7 +162,7 @@ export default function ProfilePage() {
                 </section>
 
                 <section className="bg-red-900/20 border border-red-500/20 rounded-2xl p-6 backdrop-blur-md shadow-xl">
-                    <h3 className="text-2xl font-bold text-center text-red-300 mb-2">
+                    <h3 className="text-2xl font-bold text-red-300 mb-2">
                         ZONA BAHAYA
                     </h3>
                     <p className="text-sm text-gray-300/90 mb-4">

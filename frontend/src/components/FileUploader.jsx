@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import { useRef, useState } from "react";
 import { HiUpload } from "react-icons/hi";
 
-export default function FileUploader({ onUpload, file }){
+export default function FileUploader({ onUpload, compact = false }) {
     const [isDragActive, setIsDragActive] = useState(false);
+    const inputRef = useRef(null);
+
+    const validateFile = (selectedFile) => {
+        if (!selectedFile) return;
+
+        if (selectedFile.type !== "application/pdf") {
+            alert("File harus berformat PDF.");
+            return;
+        }
+
+        if (selectedFile.size > 5 * 1024 * 1024) {
+            alert("Ukuran file maksimal 5MB.");
+            return;
+        }
+
+        onUpload(selectedFile);
+    };
 
     const handleDrag = (e) => {
         e.preventDefault();
         e.stopPropagation();
+
         if (e.type === "dragenter" || e.type === "dragover") {
             setIsDragActive(true);
         } else if (e.type === "dragleave") {
@@ -18,42 +36,56 @@ export default function FileUploader({ onUpload, file }){
         e.preventDefault();
         e.stopPropagation();
         setIsDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            onUpload(e.dataTransfer.files[0]);
-        }
+
+        validateFile(e.dataTransfer.files?.[0]);
     };
 
     const handleChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            onUpload(e.target.files[0]);
-        }
+        validateFile(e.target.files?.[0]);
+        e.target.value = "";
     };
 
     return (
         <div
-            className={`relative w-full max-w-xl p-10 border-2 border-dashed rounded-[30px] transition-all duration-300 flex flex-col items-center justify-center mt-10
-                ${isDragActive 
-                    ? "border-yellow-300 bg-white/10 scale-50"
-                    : "border-white/30 bg-white/5 hover:border-white/50"}`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
+            onClick={() => inputRef.current?.click()}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+            className={`
+                relative w-full border-2 border-dashed rounded-3xl cursor-pointer
+                transition-all duration-300 flex flex-col items-center justify-center backdrop-blur-sm
+                ${compact ? "p-6" : "max-w-xl p-12 mt-6 mb-3 shadow-xl shadow-black/5"}
+                ${isDragActive
+                    ? "border-amber-400 bg-white/10 scale-[1.02] shadow-amber-500/10 shadow-lg"
+                    : "border-white/20 bg-white/5 hover:border-white/40 hover:bg-white/10 hover:scale-[1.01]"
+                }
+            `}
         >
             <input
+                ref={inputRef}
                 type="file"
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                className="hidden"
                 onChange={handleChange}
                 accept=".pdf"
             />
 
-            <div className="flex flex-col items-center gap-4">
-                <div className="p-5 bg-white/10 rounded-full shadow-lg">
-                    <HiUpload className="text-5xl text-white" />
+            <div className="flex flex-col items-center gap-2 text-center select-none">
+                <div className={`
+                    ${compact ? "p-3" : "p-5"} 
+                    transition-transform duration-300 group-hover:scale-110
+                `}>
+                    <HiUpload size={60} className={`${compact ? "text-2xl" : "text-4xl"} text-white`} />
                 </div>
-                <div className="text-center">
-                    <h2 className="text-2xl font-semibold text-white">Drop or Click</h2>
-                    <p className="text-gray-300 mt-1">Upload CV mu di sini</p>
+
+                <div>
+                    <h2 className={`${compact ? "text-base" : "text-2xl"} font-bold text-white tracking-wide`}>
+                        {isDragActive ? "Lepaskan File di Sini" : "Drop or Click to Upload"}
+                    </h2>
+
+                    <p className="text-gray-300/80 mt-1 text-sm font-medium">
+                        Unggah CV PDF maks. 5MB
+                    </p>
                 </div>
             </div>
         </div>

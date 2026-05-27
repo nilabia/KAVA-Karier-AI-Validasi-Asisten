@@ -97,3 +97,21 @@ export const getProfile = async () => {
         },
     }));
 };
+
+export const forgotPassword = async (email) =>
+    handleResponse(() => fetch(`${BASE_URL}/users/forgot-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email }),
+    }));
+
+export const resetPassword = async ({ token, newPassword }) =>
+    handleResponse(() => fetch(`${BASE_URL}/users/reset-password`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token, newPassword })
+    }));
