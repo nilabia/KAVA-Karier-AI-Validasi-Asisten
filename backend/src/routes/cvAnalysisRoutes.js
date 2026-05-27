@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const authMiddleware = require('../middleware/authMiddleware');
-const { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice } = require('../handlers/CvAnalysisHandler');
+const { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice, deleteAnalysis } = require('../handlers/CvAnalysisHandler');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
@@ -15,22 +15,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, 
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype === 'application/pdf') cb(null, true);
     else cb(new Error('Only PDF files are allowed'), false);
   },
 });
 
-router.post(
-  '/analyze',
-  authMiddleware,
-  upload.single('cv'),
-  analyzeCV
-);
-
+router.post('/analyze', authMiddleware, upload.single('cv'), analyzeCV);
 router.get('/history', authMiddleware, getHistory);
 router.get('/history/:id', authMiddleware, getAnalysisDetail);
 router.get('/advice/:id', authMiddleware, getCareerAdvice);
+router.delete('/history/:id', authMiddleware, deleteAnalysis);
 
 module.exports = router;

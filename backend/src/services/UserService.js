@@ -51,25 +51,25 @@ const UserService = {
     const { sub: googleId, email, name } = payload;
 
     const existing = await pool.query(
-      'SELECT id, auth_provider FROM users WHERE email = $1',
+      'SELECT id, auth_provider, is_verified FROM users WHERE email = $1',
       [email]
     );
 
     let userId;
     if (existing.rows.length > 0) {
       const existingUser = existing.rows[0];
-      if (existingUser.auth_provider !== 'google') {
-        throw new ClientError(
-          'This email is already registered with a password. Please login with your email and password.',
-          409
-        );
-      }
+
+      await pool.query(
+        `UPDATE users SET google_id = COALESCE(google_id, $1), 
+        is_verified = true, updated_at = CURRENT_TIMESTAMP WHERE id = $2`,
+        [googleId, existingUser.id]
+      );
       userId = existingUser.id;
     } else {
       const id = uuidv4();
       const result = await pool.query(
         `INSERT INTO users (id, name, email, google_id, auth_provider, is_verified)
-         VALUES ($1, $2, $3, $4, 'google', true) RETURNING id`,
+        VALUES ($1, $2, $3, $4, 'google', true) RETURNING id`,
         [id, name, email, googleId]
       );
       userId = result.rows[0].id;

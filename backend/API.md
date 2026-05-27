@@ -563,6 +563,25 @@ Error `404` - not found:
 }
 ```
 
+### 16b. Delete Analysis
+**`DELETE /api/cv/history/:id`**
+
+Response `200`:
+```json
+{
+  "status": "success",
+  "message": "Analysis deleted successfully"
+}
+```
+
+Error `404` - not found:
+```json
+{
+  "status": "failed",
+  "message": "CV analysis not found"
+}
+```
+
 ---
 
 ### 17. Get Career Advice
