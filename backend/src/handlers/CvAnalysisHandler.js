@@ -64,6 +64,7 @@ async function analyzeCV(req, res, next) {
       skillGap,
       extractedData,
       careerAdvice,
+      cvFilename: req.file.originalname,
     });
 
     fs.unlink(req.file.path, () => {});

@@ -26,11 +26,11 @@ router.post(
   '/analyze',
   authMiddleware,
   upload.single('cv'),
-  CvAnalysisHandler.analyzeCV
+  analyzeCV
 );
 
-router.get('/history', authMiddleware, CvAnalysisHandler.getHistory);
-router.get('/history/:id', authMiddleware, CvAnalysisHandler.getAnalysisDetail);
+router.get('/history', authMiddleware, getHistory);
+router.get('/history/:id', authMiddleware, getAnalysisDetail);
 router.get('/advice/:id', authMiddleware, getCareerAdvice);
 router.delete('/history/:id', authMiddleware, deleteAnalysis);
 module.exports = router;

@@ -7,7 +7,7 @@ const UserHandler = {
       const { name, email, password } = req.body;
       const { user, verificationCode } = await UserService.register({ name, email, password });
 
-      await sendVerificationEmail(email, name, verificationCode);
+      await sendVerificationEmail(email, verificationCode);
 
       res.status(201).json({
         status: 'success',
@@ -97,6 +97,21 @@ const UserHandler = {
       const { token, newPassword } = req.body;
       await UserService.resetPassword(token, newPassword);
       res.status(200).json({ status: 'success', message: 'Password successfully reset' });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async resendOtp(req, res, next) {
+    try {
+      const { email } = req.body;
+      const verificationCode = await UserService.resendOtp(email);
+      const { sendVerificationEmail } = require('../utils/mailer');
+      await sendVerificationEmail(email, verificationCode);
+      res.status(200).json({
+        status: 'success',
+        message: 'Verification code resent. Please check your email.',
+      });
     } catch (error) {
       next(error);
     }
