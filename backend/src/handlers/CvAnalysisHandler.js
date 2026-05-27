@@ -109,4 +109,14 @@ async function getCareerAdvice(req, res, next) {
   }
 }
 
-module.exports = { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice };
+async function deleteAnalysis(req, res, next) {
+  try {
+    await CvAnalysisService.deleteAnalysis(req.params.id, req.user.id);
+    res.status(200).json({ status: 'success', message: 'Analysis deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+module.exports = { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice, deleteAnalysis };

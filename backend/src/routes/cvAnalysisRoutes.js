@@ -3,8 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const authMiddleware = require('../middleware/authMiddleware');
-const CvAnalysisHandler = require('../handlers/CvAnalysisHandler');
-const { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice } = require('../handlers/CvAnalysisHandler');
+const { analyzeCV, getHistory, getAnalysisDetail, getCareerAdvice, deleteAnalysis } = require('../handlers/CvAnalysisHandler');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
@@ -33,5 +32,5 @@ router.post(
 router.get('/history', authMiddleware, CvAnalysisHandler.getHistory);
 router.get('/history/:id', authMiddleware, CvAnalysisHandler.getAnalysisDetail);
 router.get('/advice/:id', authMiddleware, getCareerAdvice);
-
+router.delete('/history/:id', authMiddleware, deleteAnalysis);
 module.exports = router;

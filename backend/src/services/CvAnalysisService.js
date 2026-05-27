@@ -29,6 +29,14 @@ const CvAnalysisService = {
     );
     if (result.rows.length === 0) throw new NotFoundError('CV analysis not found');
     return result.rows[0];
+  },
+
+    async deleteAnalysis(id, userId) {
+    const result = await pool.query(
+        'DELETE FROM cv_analysis WHERE id = $1 AND user_id = $2 RETURNING id',
+        [id, userId]
+    );
+    if (result.rows.length === 0) throw new NotFoundError('CV analysis not found');
     },
 };
 
