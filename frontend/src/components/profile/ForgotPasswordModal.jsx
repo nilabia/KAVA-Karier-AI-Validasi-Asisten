@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { MdEmail } from "react-icons/md";
-import { forgotPassword } from "../services/auth";
+import { forgotPassword } from "../../services/auth";
 
 export default function ForgotPasswordModal({ isOpen, onClose }) {
     const [email, setEmail] = useState("");

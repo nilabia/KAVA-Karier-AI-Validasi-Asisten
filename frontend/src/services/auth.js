@@ -1,31 +1,42 @@
+import { handleExpiredSession } from '../utils/session.js';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
 const handleResponse = async (responseFn) => {
-    try{
+    try {
         const response = await responseFn();
         const contentType = response.headers.get("content-type");
+
         if (!contentType || !contentType.includes("application/json")) {
             return {
                 status: "error",
                 message: "Server sedang bermasalah (bukan respon JSON)."
             };
         }
+
         const data = await response.json();
+
+        if (handleExpiredSession(data.message, response.status)) {
+            return {
+                status: "error",
+                message: "Sesi login berakhir. Silakan login kembali."
+            };
+        }
+
         if (!response.ok) {
             return {
                 status: data.status || "failed",
                 message: data.message || "Terjadi kesalahan."
             };
         }
+
         return data;
-    } catch(error) {
+    } catch (error) {
         return {
             status: "error",
             message: "Gagal terhubung ke server."
         };
     }
-}
-
+};    
 export const registerUser = async (userData) =>
     handleResponse(() => fetch(`${BASE_URL}/users/register`, {
             method: "POST",

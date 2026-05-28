@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import { HiCheckCircle, HiExclamationCircle, HiAcademicCap, HiExternalLink } from "react-icons/hi";
+import FeedbackCard from "./FeedbackCard";
 
 export default function AnalysisResult({ analysis }) {
     const topRoles = analysis?.top_roles || [];
@@ -22,22 +23,25 @@ export default function AnalysisResult({ analysis }) {
                     {topRoles.map((item, index) => (
                         <div
                             key={item.rank || index}
-                            className={`relative overflow-hidden border p-4 rounded-2xl transition-all duration-300 hover:shadow-md ${
-                                index === 0 
-                                ? "bg-gradient-to-br from-[#0b1e42] to-[#1a3a6f] text-white border-transparent shadow-lg shadow-blue-900/10 scale-[1.01]" 
-                                : "bg-white text-[#0b1e42] border-gray-100"
-                            }`}
+                            className="relative overflow-hidden border p-4 rounded-2xl 
+                                transition-all duration-300 hover:shadow-md
+                                bg-gradient-to-br from-[#0b1e42] to-[#1a3a6f] 
+                                text-white border-transparent shadow-lg shadow-blue-900/10 
+                                scale-[1.01] flex flex-col min-h-35"
                         >
-                            <span className={`absolute -right-2 -bottom-4 text-6xl font-black opacity-10 ${index === 0 ? "text-white" : "text-[#0b1e42]"}`}>
+                            <span className="absolute -right-2 -bottom-4 text-6xl font-black opacity-10 text-white">
                                 #{index + 1}
                             </span>
-                            <p className={`text-xs uppercase font-bold tracking-wider ${index === 0 ? "text-amber-400" : "text-blue-600"} mb-1`}>
+                            
+                            <p className="text-xs uppercase font-bold tracking-wider text-amber-400 mb-2">
                                 Rekomendasi {index + 1}
                             </p>
+
                             <h3 className="font-bold text-base md:text-lg leading-tight mb-2 pr-6">
                                 {item.role}
                             </h3>
-                            <div className="flex items-center gap-1.5">
+
+                            <div className="flex items-center gap-1.5 mt-auto">
                                 <div className={`h-2 w-2 rounded-full ${index === 0 ? "bg-emerald-400" : "bg-emerald-500"}`}></div>
                                 <span className={`text-xs font-semibold ${index === 0 ? "text-gray-200" : "text-gray-500"}`}>
                                     Match: {item.confidence?.toFixed(1)}%
@@ -48,7 +52,7 @@ export default function AnalysisResult({ analysis }) {
                 </div>
             </div>
 
-            <div className="bg-gray-50/70 border border-gray-100 rounded-2xl p-5 md:p-6">
+            <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 md:p-6">
                 <div className="flex items-center justify-between mb-3">
                     <div>
                         <h2 className="text-xl md:text-2xl font-bold text-[#0b1e42]">Kecocokan Skill</h2>
@@ -67,7 +71,7 @@ export default function AnalysisResult({ analysis }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="border border-emerald-600/30 bg-emerald-50/30 rounded-2xl p-5">
+                <div className="border border-emerald-600/30 bg-emerald-50/50 rounded-2xl p-5">
                     <h3 className="font-bold text-[#0b1e42] text-base md:text-lg flex items-center gap-2 mb-4">
                         <HiCheckCircle className="text-emerald-600 text-xl" /> Skill yang Sudah Cocok
                     </h3>
@@ -80,11 +84,11 @@ export default function AnalysisResult({ analysis }) {
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-400 text-base md:text-lg italic">Belum ada skill yang cocok.</p>
+                        <p className="text-gray-400 text-sm italic">Belum ada skill yang cocok.</p>
                     )}
                 </div>
 
-                <div className="border border-rose-400/40 bg-rose-50/20 rounded-2xl p-5">
+                <div className="border border-rose-400/40 bg-rose-50/40 rounded-2xl p-5">
                     <h3 className="font-bold text-[#0b1e42] text-base md:text-lg flex items-center gap-2 mb-4">
                         <HiExclamationCircle className="text-rose-500 text-xl" /> Skill yang Perlu Ditingkatkan
                     </h3>
@@ -106,7 +110,7 @@ export default function AnalysisResult({ analysis }) {
                 <h2 className="text-xl md:text-2xl font-bold text-[#0b1e42] mb-3 flex items-center gap-2">
                     <span>💡</span> Career Insights & Advice
                 </h2>
-                <div className="border border-gray-100 rounded-2xl p-6 bg-white shadow-sm text-gray-700 leading-relaxed text-sm space-y-4">
+                <div className="border border-gray-100 rounded-2xl p-6 bg-gray-50 shadow-sm text-gray-700 leading-relaxed text-sm space-y-4">
                     <ReactMarkdown 
                         components={{
                             p: ({node, ...props}) => {
@@ -158,7 +162,7 @@ export default function AnalysisResult({ analysis }) {
                                 href={`https://www.coursera.org/search?query=${skill}`}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="group border border-gray-100 rounded-2xl p-4 bg-white hover:border-blue-300 hover:shadow-md transition-all duration-300 flex justify-between items-center"
+                                className="group border border-gray-100 rounded-2xl p-4 bg-gray-50 hover:border-blue-300 hover:shadow-md transition-all duration-300 flex justify-between items-center"
                             >
                                 <div>
                                     <p className="font-bold text-[#0b1e42] group-hover:text-blue-600 transition-colors text-base">
@@ -174,6 +178,7 @@ export default function AnalysisResult({ analysis }) {
                     )}
                 </div>
             </div>
+            <FeedbackCard/>
         </div>
     );
 }

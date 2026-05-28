@@ -27,3 +27,11 @@ body {
     margin: 0;
     background: linear-gradient(140deg, #0b1e42 0%, #335daf 50%, #0b1e42 100%);
 }
+
+.CustomScrollbar {
+    scrollbar-width: none;
+}
+
+.CustomScrollbar::-webkit-scrollbar {
+    display: none;
+}

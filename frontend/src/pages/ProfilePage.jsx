@@ -1,6 +1,6 @@
 import useProfile from "../hooks/useProfile.jsx";
-import PasswordModal from "../components/PasswordModal";
-import DeleteAccountModal from "../components/DeleteAccountModal";
+import PasswordModal from "../components/profile/PasswordModal.jsx";
+import DeleteAccountModal from "../components/profile/DeleteAccountModal.jsx";
 import { FaCheck, FaEnvelope, FaLock, FaPen, FaTimes, FaTrashAlt, FaUser } from "react-icons/fa";
 
 export default function ProfilePage() {
