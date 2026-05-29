@@ -14,12 +14,32 @@ const CvAnalysisService = {
     return result.rows[0];
   },
 
-  async getHistoryByUserId(userId) {
-    const result = await pool.query(
-      'SELECT id, top_roles, skill_gap, extracted_data, career_advice, cv_filename, created_at FROM cv_analysis WHERE user_id = $1 ORDER BY created_at DESC',
+  async getHistoryByUserId(userId, { page = 1, limit = 10 } = {}) {
+    const offset = (page - 1) * limit;
+
+    const countResult = await pool.query(
+      'SELECT COUNT(*) FROM cv_analysis WHERE user_id = $1',
       [userId]
     );
-    return result.rows;
+    const total = parseInt(countResult.rows[0].count, 10);
+
+    const result = await pool.query(
+      `SELECT id, top_roles, skill_gap, extracted_data, career_advice, cv_filename, created_at
+       FROM cv_analysis WHERE user_id = $1
+       ORDER BY created_at DESC
+       LIMIT $2 OFFSET $3`,
+      [userId, limit, offset]
+    );
+
+    return {
+      analyses: result.rows,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   },
 
   async getAnalysisById(id, userId) {
@@ -31,13 +51,13 @@ const CvAnalysisService = {
     return result.rows[0];
   },
 
-    async deleteAnalysis(id, userId) {
+  async deleteAnalysis(id, userId) {
     const result = await pool.query(
-        'DELETE FROM cv_analysis WHERE id = $1 AND user_id = $2 RETURNING id',
-        [id, userId]
+      'DELETE FROM cv_analysis WHERE id = $1 AND user_id = $2 RETURNING id',
+      [id, userId]
     );
     if (result.rows.length === 0) throw new NotFoundError('CV analysis not found');
-    },
+  },
 };
 
 module.exports = CvAnalysisService;

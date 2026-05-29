@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../utils/database');
@@ -6,6 +7,10 @@ const NotFoundError = require('../exceptions/NotFoundError');
 const ClientError = require('../exceptions/ClientError');
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+function hashToken(token) {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
 
 const UserService = {
   async register({ name, email, password }) {
@@ -106,6 +111,8 @@ const UserService = {
     const { id, password: hashed, is_verified } = result.rows[0];
     if (!is_verified) throw new ClientError('Account is not verified. Please check your email.', 403);
 
+    if (!hashed) throw new ClientError('This account uses Google login. Please sign in with Google or set a password first.', 400);
+
     const isValid = await bcrypt.compare(password, hashed);
     if (!isValid) throw new ClientError('Email or password is incorrect', 401);
 
@@ -176,24 +183,26 @@ const UserService = {
     if (result.rows.length === 0) throw new NotFoundError('Email not found');
 
     if (result.rows[0].password === null) {
-      throw new ClientError('This account uses Google login. Please set a password first via the profile page.', 400);
+      throw new ClientError('This account uses Google login and has no password. Please set a password first via your profile.', 400);
     }
 
-    const token = require('crypto').randomBytes(32).toString('hex');
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = hashToken(rawToken);
     const expires = new Date(Date.now() + 60 * 60 * 1000); 
 
     await pool.query(
       'UPDATE users SET reset_token = $1, reset_token_expires = $2 WHERE id = $3',
-      [token, expires, result.rows[0].id]
+      [hashedToken, expires, result.rows[0].id]
     );
 
-    return { name: result.rows[0].name, token };
+    return { name: result.rows[0].name, token: rawToken };
   },
 
   async resetPassword(token, newPassword) {
+    const hashedToken = hashToken(token);
     const result = await pool.query(
       'SELECT id, reset_token_expires FROM users WHERE reset_token = $1',
-      [token]
+      [hashedToken]
     );
     if (result.rows.length === 0) throw new ClientError('Invalid or expired token', 400);
 
