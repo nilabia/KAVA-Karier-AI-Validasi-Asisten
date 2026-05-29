@@ -22,3 +22,14 @@ Thumbs.db"__pycache__/"
 
 #Delete files
 CareerCoachService.js
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+.venv/
+env/
+
+# Ignore logs
+*.log

@@ -15,20 +15,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, 
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype === 'application/pdf') cb(null, true);
     else cb(new Error('Only PDF files are allowed'), false);
   },
 });
 
-router.post(
-  '/analyze',
-  authMiddleware,
-  upload.single('cv'),
-  analyzeCV
-);
-
+router.post('/analyze', authMiddleware, upload.single('cv'), analyzeCV);
 router.get('/history', authMiddleware, getHistory);
 router.get('/history/:id', authMiddleware, getAnalysisDetail);
 router.get('/advice/:id', authMiddleware, getCareerAdvice);

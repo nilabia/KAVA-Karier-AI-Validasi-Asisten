@@ -10,6 +10,7 @@ export default function AuthPage({ type = "signin" }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [sessionMessage, setSessionMessage] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -34,6 +35,15 @@ export default function AuthPage({ type = "signin" }) {
     };
 
     useEffect(() => {
+        const message = localStorage.getItem("sessionMessage");
+
+        if (message) {
+            setSessionMessage(message);
+            localStorage.removeItem("sessionMessage");
+        }
+    }, []);
+
+    useEffect(() => {
         setStep(1);
         setErrorMessage("");
 
@@ -54,7 +64,13 @@ export default function AuthPage({ type = "signin" }) {
 
     return (         
         <div className="w-full flex-1 flex items-center justify-center p-6 mt-5">
-            <div className="w-full max-w-md bg-gray-500/10 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-4 my-6">    
+            <div className="w-full max-w-md bg-gray-500/10 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-4 my-6">
+                {sessionMessage && (
+                    <div className="mx-5 mt-4 bg-amber-100 border border-amber-300 text-amber-700 px-4 py-3 rounded-xl text-sm font-semibold text-center">
+                        {sessionMessage}
+                    </div>
+                )}
+
                 <div className="flex border-[1.5px] border-white rounded-xl mt-6 mx-5 p-1">
                     <NavLink
                         to="/auth/login"

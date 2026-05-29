@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { loginUser } from "../services/auth.js";
+import ForgotPasswordModal from "../components/profile/ForgotPasswordModal.jsx";
 import { MdEmail, MdLock } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function LoginForm(){
     const [email, setEmail] = useState("");
+    const [isForgotModal, setIsForgotModal] = useState(false);
     const navigate = useNavigate();
     const { isLoading, setIsLoading, isGoogleLoading, errorMessage, setErrorMessage } = useOutletContext();
     
@@ -73,12 +75,22 @@ export default function LoginForm(){
                                 type="password"
                                 minLength={8}
                                 className={inputClass}
-                                required
+                                required 
                             />
                         </div>
                     </div>
-                    
-                    <div className="mt-4">
+
+                    <div className="text-red-300 text-sm text-right mr-1">
+                        <button
+                            type="button"
+                            onClick={() => setIsForgotModal(true)}
+                            className="hover:text-red-200 transition-colors cursor-pointer"
+                        >
+                            <p>Lupa Password</p>
+                        </button>
+                    </div>
+                </div>
+                    <div className="mx-5 text-right mr-6 mt-2">
                         <button
                             type="submit"
                             disabled={isLoading || isGoogleLoading}
@@ -87,8 +99,12 @@ export default function LoginForm(){
                                 {isLoading ? "Memproses..." : "LOGIN" }
                         </button>
                     </div>
-                </div>
             </form>
+
+            <ForgotPasswordModal
+                isOpen={isForgotModal}
+                onClose={() => setIsForgotModal(false)}
+            />
         </div>
     )
 }
