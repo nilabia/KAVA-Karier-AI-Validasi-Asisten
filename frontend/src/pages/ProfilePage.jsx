@@ -1,5 +1,6 @@
 import useProfile from "../hooks/useProfile.jsx";
 import PasswordModal from "../components/profile/PasswordModal.jsx";
+import PasswordMethodModal from "../components/profile/PasswordMethodModal.jsx";
 import DeleteAccountModal from "../components/profile/DeleteAccountModal.jsx";
 import { FaCheck, FaEnvelope, FaLock, FaPen, FaTimes, FaTrashAlt, FaUser } from "react-icons/fa";
 
@@ -25,6 +26,9 @@ export default function ProfilePage() {
         handleSaveName,
         handleUpdatePassword,
         handleDeleteAccount,
+        handleForgotPasswordByEmail,
+        handleForgotPasswordSuccess,
+        modalSuccess,
         closeModal
     } = useProfile();
 
@@ -66,9 +70,9 @@ export default function ProfilePage() {
                                 </div>
 
                                 <div className="flex-1">
-                                    <p className={labelClass} htmlFor={editName ? "nameInput" : undefined}>
+                                    <label className={labelClass} htmlFor={editName ? "nameInput" : undefined}>
                                         Nama Lengkap
-                                    </p>
+                                    </label>
                                     {editName ? (
                                         <input
                                             id="nameInput"
@@ -145,7 +149,7 @@ export default function ProfilePage() {
 
                                 <div className="mt-2 sm:mt-0 pl-14 sm:pl-0">
                                     <button
-                                    onClick={() => setActiveModal("password")}
+                                    onClick={() => setActiveModal("passwordMethod")}
                                     className={buttonActionClass}
                                     >
                                         <FaPen size={10} />
@@ -170,12 +174,24 @@ export default function ProfilePage() {
                     </p>
                     <button
                         onClick={() => setActiveModal("delete")}
-                        className="flex items-center space-x-2 bg-red-300 text-red-950 hover-bg-red/600/20 px-4 py-2 rounded-xl text-sm font-medium"
+                        className="flex items-center space-x-2 bg-red-300 text-red-950 hover:bg-red-600/20 px-4 py-2 rounded-xl text-sm font-medium"
                     >
                         <FaTrashAlt size={14} />
                         <span>Hapus Akun KAVA</span>
                     </button>
                 </section>
+
+                <PasswordMethodModal
+                    isOpen={activeModal === "passwordMethod"}
+                    onClose={closeModal}
+                    onChoosePassword={() => setActiveModal("password")}
+                    onChooseEmail={handleForgotPasswordByEmail}
+                    onSuccessClose={handleForgotPasswordSuccess}
+                    loading={modalLoading}
+                    error={modalError}
+                    successMessage={modalSuccess}
+                    email={user.email}
+                />
 
                 <PasswordModal
                     isOpen={activeModal === "password"}

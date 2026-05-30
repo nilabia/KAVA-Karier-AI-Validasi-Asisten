@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { registerUser, verifyEmail } from "../services/auth.js";
 import { MdCheckCircle, MdEmail, MdLock, MdPerson } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -11,17 +11,7 @@ export default function RegisterForm(){
         password: "",
         confirmPassword: ""
     });
-    const [code, setCode] = useState("");
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const savedRegister = localStorage.getItem("pendingRegister");
-        if (savedRegister) {
-            const parsed = JSON.parse(savedRegister);
-            setFormData(parsed.formData);
-            setStep(parsed.step);
-        }
-    }, []);
 
     const handleChange = (e) => setFormData({
         ...formData,
@@ -46,12 +36,6 @@ export default function RegisterForm(){
         });
         
         if(result.status === "success") {
-            localStorage.setItem("pendingRegister", 
-                JSON.stringify({
-                    formData, 
-                    step: 2
-                })
-            );
             setStep(2);
         } else {
             setErrorMessage(result.message);

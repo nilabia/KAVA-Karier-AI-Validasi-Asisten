@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import { HiCheckCircle, HiExclamationCircle, HiAcademicCap, HiExternalLink } from "react-icons/hi";
 import FeedbackCard from "./FeedbackCard";
+import PropTypes from "prop-types";
 
 export default function AnalysisResult({ analysis }) {
     const topRoles = analysis?.top_roles || [];

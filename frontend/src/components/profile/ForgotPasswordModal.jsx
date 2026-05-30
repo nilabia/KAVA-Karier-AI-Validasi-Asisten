@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { MdEmail } from "react-icons/md";
 import { forgotPassword } from "../../services/auth";
+import { createPortal } from "react-dom";
 
 export default function ForgotPasswordModal({ isOpen, onClose }) {
     const [email, setEmail] = useState("");
@@ -45,10 +46,10 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
         }
     };
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    return createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
             <div
-                className="fixed inset-0 rounded-2xl bg-gray-600/70 backdrop-blur-sm"
+                className="fixed inset-0 rounded-2xl bg-gray-700/20 backdrop-blur-xs"
                 onClick={handleLocalClose}
             />
 
@@ -110,7 +111,8 @@ export default function ForgotPasswordModal({ isOpen, onClose }) {
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
 

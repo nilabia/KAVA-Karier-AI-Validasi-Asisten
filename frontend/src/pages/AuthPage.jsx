@@ -46,20 +46,6 @@ export default function AuthPage({ type = "signin" }) {
     useEffect(() => {
         setStep(1);
         setErrorMessage("");
-
-        if(location.pathname === "/auth/register") {
-            const savedRegister =
-            localStorage.getItem("pendingRegister");
-
-            if (savedRegister) {
-                const parsed = JSON.parse(savedRegister);
-                setStep(parsed.step || 1)
-            } else {
-                setStep(1);
-            }
-        } else {
-            setStep(1);
-        }
     }, [location.pathname]);
 
     return (         

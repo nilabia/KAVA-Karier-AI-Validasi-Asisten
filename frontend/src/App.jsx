@@ -3,14 +3,15 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './pages/AuthPage';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import LandingPage from './pages/LandingPage';
-import DashboardPage from './pages/DashboardPage';
-import ProfilePage from './pages/ProfilePage';
-import PublicLayout from './layouts/PublicLayout';
 import RegisterForm from '../src/authForm/RegisterForm';
 import LoginForm from '../src/authForm/LoginForm';
+import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
+import PublicLayout from './layouts/PublicLayout';
+import NotFoundPage from './pages/NotFoundPage';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import PublicRoute from './components/common/PublicRoute';
-import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
               <Route path="register" element={<RegisterForm/>}/>
             </Route>
 
+            <Route path="/reset-password" element={<ResetPasswordPage/>} />
+            
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <DashboardPage/>

@@ -1,5 +1,6 @@
 import { FaLock } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useState } from "react";
 
 export default function PasswordModal({ isOpen, onClose, onSubmit, error, loading, formStates }) {
     if (!isOpen) return null;
@@ -7,7 +8,7 @@ export default function PasswordModal({ isOpen, onClose, onSubmit, error, loadin
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             <div
-                className="fixed inset-0 bg-gray-500/30 backdrop-blur-sm"
+                className="fixed inset-0 bg-gray-700/20 backdrop-blur-sm"
                 onClick={onClose}
             />
             <div className="relative w-full max-w-md bg-[#152d58] border-white/10 p-6 rounded-2xl shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 text-white">

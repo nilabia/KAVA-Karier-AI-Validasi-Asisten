@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProfile } from "../services/auth.js";
+import { getProfile, forgotPassword } from "../services/auth.js";
 
 export default function useProfile() {
     const navigate = useNavigate();
-    const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+    const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
     const [user, setUser] = useState({
         name: "",
         email: "",
@@ -20,6 +20,7 @@ export default function useProfile() {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [modalSuccess, setModalSuccess] = useState("");
 
     useEffect(() => {
         const fetchUserProfile = async() => {
@@ -75,10 +76,14 @@ export default function useProfile() {
 
     const handleUpdatePassword = async (e) => {
         e.preventDefault();
-        if (newPassword !== confirmPassword)
+
+        if (newPassword !== confirmPassword) {
             return setModalError("Password baru dan konfirmasi password baru harus sama!");
-        
+        }
+
         setModalLoading(true);
+        setModalError("");
+
         const token = localStorage.getItem("accessToken");
 
         try {
@@ -92,20 +97,29 @@ export default function useProfile() {
             });
 
             const data = await response.json();
-            if(response.ok && data.status === "success") {
+
+            if (response.ok && data.status === "success") {
                 alert("Password berhasil diperbarui! Silahkan login kembali.");
                 localStorage.clear();
-                navigate("/auth/login", {replace: true});
+                navigate("/auth/login", { replace: true });
             } else {
-                setModalError(data.message || "Gagal terhubung ke server.");
+                // INI PESAN DARI BACKEND UNTUK AKUN GOOGLE YANG BELUM PUNYA PASSWORD
+                if (data.message === "Use PUT /users/set-password to set your password first") {
+                    setModalError(
+                        "Akun ini belum memiliki password. Silakan gunakan metode Via Email untuk membuat password terlebih dahulu."
+                    );
+                } else {
+                    setModalError(
+                        data.message || "Gagal mengubah password. Silakan coba lagi nanti."
+                    );
+                }
             }
-        } catch(error) {
+        } catch (error) {
             setModalError("Gagal terhubung ke server.");
         } finally {
             setModalLoading(false);
         }
     };
-
     const handleDeleteAccount = async () => {
         setModalLoading(true);
         const token = localStorage.getItem("accessToken");
@@ -123,7 +137,7 @@ export default function useProfile() {
                 localStorage.clear();
                 navigate("/auth/login", { replace: true });
             } else {
-                setModalError(data.message || "Gagal menghapus akun.");
+                setModalError(data.message || "Gagal menghapus akun. Silahkan coba lagi nanti.");
             }
         } catch (error) {
             setModalError("Gagal terhubung ke server.");
@@ -132,12 +146,43 @@ export default function useProfile() {
         }
     };
 
+    const handleForgotPasswordByEmail = async () => {
+        if (!user.email) {
+            return setModalError("Email pengguna tidak ditemukan.");
+        }
+
+        setModalLoading(true);
+        setModalError("");
+        setModalSuccess("");
+
+        const result = await forgotPassword(user.email);
+
+        if (result.status === "success") {
+            setModalSuccess(
+                "Link reset password telah dikirim. Silakan cek inbox atau spam."
+            );
+        } else {
+            setModalError(
+                result.message || "Gagal mengirim link reset password. Silahkan coba lagi nanti."
+            );
+        }
+
+        setModalLoading(false);
+    };
+
+    const handleForgotPasswordSuccess = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        navigate("/auth/login", { replace: true });
+    };
+
     const closeModal = () => {
         setActiveModal(null);
         setModalError("");
         setOldPassword("");
         setNewPassword("");
         setConfirmPassword("");
+        setModalSuccess("");
     };
     
     return {
@@ -161,6 +206,9 @@ export default function useProfile() {
         handleSaveName,
         handleUpdatePassword,
         handleDeleteAccount,
-        closeModal
+        closeModal,
+        modalSuccess,
+        handleForgotPasswordByEmail,
+        handleForgotPasswordSuccess
     };
 }
