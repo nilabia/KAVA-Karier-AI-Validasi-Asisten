@@ -83,6 +83,11 @@ app.use(errorMiddleware);
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
 
+const fs = require('fs');
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
+
 app.listen(PORT, HOST, () => {
   console.log(`KAVA Backend is running at http://${HOST}:${PORT}`);
 });
