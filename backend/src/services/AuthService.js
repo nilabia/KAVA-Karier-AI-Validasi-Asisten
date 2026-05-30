@@ -14,7 +14,7 @@ const AuthService = {
 
   generateRefreshToken(userId) {
     return jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_KEY, {
-      expiresIn: REFRESH_TOKEN_EPIRES_IN,
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
     });
   },
 

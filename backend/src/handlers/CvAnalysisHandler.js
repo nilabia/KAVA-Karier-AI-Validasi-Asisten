@@ -82,8 +82,10 @@ async function analyzeCV(req, res, next) {
 
 async function getHistory(req, res, next) {
   try {
-    const analyses = await CvAnalysisService.getHistoryByUserId(req.user.id);
-    res.status(200).json({ status: 'success', data: { analyses } });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const result = await CvAnalysisService.getHistoryByUserId(req.user.id, { page, limit });
+    res.status(200).json({ status: 'success', data: result });
   } catch (error) {
     next(error);
   }
