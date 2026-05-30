@@ -1,16 +1,17 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp-relay.brevo.com',
+  port: 587,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
   },
 });
 
 const sendVerificationEmail = async (email, code) => {
   await transporter.sendMail({
-    from: `KAVA <${process.env.MAIL_USER}>`,
+    from: `KAVA <${process.env.MAIL_FROM}>`,
     to: email,
     subject: 'Verify Your KAVA Account',
     html: `
@@ -25,7 +26,7 @@ const sendVerificationEmail = async (email, code) => {
 const sendResetPasswordEmail = async (email, name, token) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
   await transporter.sendMail({
-    from: `KAVA <${process.env.MAIL_USER}>`,
+    from: `KAVA <${process.env.MAIL_FROM}>`,
     to: email,
     subject: 'Reset Your KAVA Password',
     html: `
