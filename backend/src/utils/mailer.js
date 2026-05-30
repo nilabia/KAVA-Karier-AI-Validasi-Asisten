@@ -1,10 +1,16 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
 
 const sendVerificationEmail = async (email, code) => {
-  await resend.emails.send({
-    from: 'KAVA <onboarding@resend.dev>',
+  await transporter.sendMail({
+    from: `KAVA <${process.env.MAIL_USER}>`,
     to: email,
     subject: 'Verify Your KAVA Account',
     html: `
@@ -18,8 +24,8 @@ const sendVerificationEmail = async (email, code) => {
 
 const sendResetPasswordEmail = async (email, name, token) => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-  await resend.emails.send({
-    from: 'KAVA <onboarding@resend.dev>',
+  await transporter.sendMail({
+    from: `KAVA <${process.env.MAIL_USER}>`,
     to: email,
     subject: 'Reset Your KAVA Password',
     html: `
