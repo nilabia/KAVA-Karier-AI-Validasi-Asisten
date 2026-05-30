@@ -9,8 +9,11 @@ const cvAnalysisRoutes = require('./routes/cvAnalysisRoutes');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const multer = require('multer');
+const fs = require('fs');
 
 const app = express();
+
+if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -20,12 +23,12 @@ const globalLimiter = rateLimit({
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10, 
+  max: 10,
   message: { status: 'failed', message: 'Too many attempts, please try again in 15 minutes' },
 });
 
 const otpLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, 
+  windowMs: 60 * 60 * 1000,
   max: 5,
   message: { status: 'failed', message: 'Too many OTP requests, please try again in 1 hour' },
 });
@@ -65,10 +68,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        status: 'failed',
-        message: 'File size exceeds 5MB limit',
-      });
+      return res.status(400).json({ status: 'failed', message: 'File size exceeds 5MB limit' });
     }
     return res.status(400).json({ status: 'failed', message: err.message });
   }
@@ -82,11 +82,6 @@ app.use(errorMiddleware);
 
 const HOST = process.env.HOST;
 const PORT = process.env.PORT;
-
-const fs = require('fs');
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
-}
 
 app.listen(PORT, HOST, () => {
   console.log(`KAVA Backend is running at http://${HOST}:${PORT}`);
