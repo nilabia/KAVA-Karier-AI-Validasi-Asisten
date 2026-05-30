@@ -98,7 +98,7 @@ def extract_sections(text: str) -> dict:
 def parse_skills_list(skills_text: str) -> list:
     if not skills_text:
         return []
-    items = re.split(r"[,;]", skills_text)
+    items = re.split(r"[,;\n•\-]", skills_text)
     return [s.strip().lower() for s in items if s.strip() and len(s.strip()) > 1]
 
 
@@ -158,7 +158,7 @@ def extract_cv(pdf_path: str) -> dict:
         "experience": sections.get("experience", "") or None,
         "experience_years": experience_years,
         "education": sections.get("education", "") or None,
-        "certifications": sections.get("certification", "") or None,
+        "certification": sections.get("certification", "") or None,
         "skills": skills_raw or None,
         "skills_list": skills_list,
         "skills_count": len(skills_list),
