@@ -5,6 +5,7 @@ import DashboardHome from "../components/dashboard/DashboardHome.jsx";
 import DashboardSidebar from "../components/dashboard/DashboardSidebar.jsx";
 import { analyzeCV, getCVDetail, getCVHistory, deleteCVHistory } from "../services/cv.js";
 import { FaClipboardCheck } from "react-icons/fa";
+import FeedbackCard from "../components/dashboard/FeedbackCard.jsx";
 
 export default function DashboardPage() {
     const { id } = useParams();
@@ -34,7 +35,9 @@ export default function DashboardPage() {
             const data = await getCVDetail(analysisId);
             setAnalysisResult(data.data.analysis);
         } catch (error) {
-            setError(error.message);
+            setAnalysisResult(null);
+            setError("");
+            navigate("/dashboard", {replace: true});
         } finally {
             setIsLoading(false);
         }
@@ -50,9 +53,14 @@ export default function DashboardPage() {
             const analysis = data.data.analysis;
 
             setAnalysisResult(analysis);
+
             await fetchHistory();
 
-            navigate(`/dashboard/history/${analysis.id}`);
+            if(analysis?.id) {
+                navigate(`/dashboard/history/${analysis.id}`);
+            } else {
+                setAnalysisResult(analysis);
+            }
             setShowHistory(false);
         } catch (error) {
             setAnalysisResult(null);
@@ -82,7 +90,8 @@ export default function DashboardPage() {
 
             if (id === itemId) {
                 setAnalysisResult(null);
-                setError("Riwayat analisis ini sudah dihapus.");
+                setError("");
+                navigate("/dashboard", { replace: true });
             }
         } catch (error) {
             alert(error.message || "Gagal menghapus riwayat.");
@@ -139,13 +148,12 @@ export default function DashboardPage() {
                             ) : error ? (
                                 <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
                                     <div className="bg-rose-50 border border-rose-500 p-10 rounded-3xl shadow-sm max-w-md">
-                                        <h3 className="text-lg font-bold text-rose-600 flex items-center justify-center gap-2 mb-2">
-                                            Riwayat Berhasil Dihapus
-                                            <FaClipboardCheck size={22}/>
+                                        <h3 className="text-base font-bold text-rose-600 flex items-center justify-center gap-2 mb-2">
+                                            Gagal melakukan analisis.
                                         </h3>
 
-                                        <p className="text-sm text-rose-500 leading-relaxed">
-                                            Riwayat analisis ini sudah tidak tersedia lagi.
+                                        <p className="text-xs text-rose-500 leading-relaxed">
+                                            {error}
                                         </p>
                                     </div>
                                 </div>
@@ -155,6 +163,7 @@ export default function DashboardPage() {
                         </main>
                     </section>
                 )}
+                <FeedbackCard/>
             </div>
         </div>
     );

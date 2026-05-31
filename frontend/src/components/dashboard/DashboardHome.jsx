@@ -61,6 +61,7 @@ export default function DashboardHome({
                         ))}
                     </div>
                 )}
+                <div className="mt-10 border-t border-white/30"/>
             </section>
         </div>
     );

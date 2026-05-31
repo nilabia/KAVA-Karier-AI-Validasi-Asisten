@@ -3,6 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { loginWithGoogle } from '../services/auth';
 import { FcGoogle } from 'react-icons/fc';
+import GoogleButton from "../components/GoogleButton";
 import PropTypes from "prop-types";
 
 export default function AuthPage() {
@@ -15,6 +16,8 @@ export default function AuthPage() {
     const location = useLocation();
 
     const handleGoogleSuccess = async (credentialResponse) => {
+        if (isGoogleLoading || isLoading) return;
+
         setIsGoogleLoading(true);
         setErrorMessage("");
         try {
@@ -76,50 +79,53 @@ export default function AuthPage() {
                     </NavLink>
                 </div>
                 
-                <div className="mt-6">
-                    <div className="w-full flex items-center justify-center px-5 relative ">
-                        <div className="absolute inset-x-5 flex items-center justify-center gap-3 bg-white rounded-[20px] p-2 shadow-md border border-gray-200 pointer-events-none">
-                            <FcGoogle size={20}/>
-                            <span className="font-quicksand font-bold text-[#0b1e42]">
-                                {isGoogleLoading ? "Memproses..." : "Masuk dengan Google"}
-                            </span>
+                <div className="mt-6 px-5">
+                    <div className="w-full flex items-center justify-center relative h-[46px]">
+                        
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                            <GoogleButton 
+                                text={isGoogleLoading ? "Memproses..." : "Continue with Google"} 
+                                disabled={isLoading || isGoogleLoading}
+                            />
                         </div>
-                        <div className={`opacity-0 z-10 cursor-pointer w-full overflow-hidden flex justify-center
-                            ${(isLoading || isGoogleLoading) ? "pointer-events-none" : ""}`
-                        }>
+
+\                        <div className={`absolute inset-0 opacity-0 z-10 flex justify-center items-center
+                            ${(isLoading || isGoogleLoading) ? "pointer-events-none" : "cursor-pointer"}`}
+                        >
                             <GoogleLogin
                                 onSuccess={handleGoogleSuccess}  
                                 onError={() => setErrorMessage("Login Google gagal.")}
                                 useOneTap={false} 
-                                width="375"
+                                width="375" 
                                 disabled={isLoading || isGoogleLoading}
                             />
                         </div>
                     </div>
+                </div>
 
-                    <div>
-                        <div className="relative flex items-center justify-center mt-10 mb-7">
-                            <div className="flex-1 h-px bg-white/30 ml-5 mr-24"></div>
-                            <span className="absolute px-4 text-[10px] text-white/80 tracking-widest font-medium bg-transparent">
-                                ATAU EMAIL
-                            </span>
-                            <div className="flex-1 h-px bg-white/30 mr-5"></div>
-                        </div>
+                <div>
+                    <div className="relative flex items-center justify-center mt-10 mb-7">
+                        <div className="flex-1 h-px bg-white/30 ml-5 mr-24"></div>
+                        <span className="absolute px-4 text-[10px] text-white/80 tracking-widest font-medium bg-transparent">
+                            ATAU EMAIL
+                        </span>
+                        <div className="flex-1 h-px bg-white/30 mr-5"></div>
                     </div>
+                </div>
 
-                    <Outlet 
-                        context={{ 
-                            step,
-                            setStep,
-                            isLoading,
-                            setIsLoading,
-                            isGoogleLoading,
-                            setIsGoogleLoading,
-                            errorMessage,
-                            setErrorMessage }}
-                        />
-                </div> 
-            </div>
+                <Outlet 
+                    context={{ 
+                        step,
+                        setStep,
+                        isLoading,
+                        setIsLoading,
+                        isGoogleLoading,
+                        setIsGoogleLoading,
+                        errorMessage,
+                        setErrorMessage
+                    }}
+                />
+            </div> 
         </div>
     );
 }

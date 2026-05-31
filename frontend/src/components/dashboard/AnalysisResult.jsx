@@ -1,6 +1,5 @@
 import ReactMarkdown from "react-markdown";
 import { HiCheckCircle, HiExclamationCircle, HiAcademicCap, HiExternalLink } from "react-icons/hi";
-import FeedbackCard from "./FeedbackCard";
 import PropTypes from "prop-types";
 
 export default function AnalysisResult({ analysis }) {
@@ -44,7 +43,7 @@ export default function AnalysisResult({ analysis }) {
 
                             <div className="flex items-center gap-1.5 mt-auto">
                                 <div className={`h-2 w-2 rounded-full ${index === 0 ? "bg-emerald-400" : "bg-emerald-500"}`}></div>
-                                <span className={`text-xs font-semibold ${index === 0 ? "text-gray-200" : "text-gray-500"}`}>
+                                <span className="text-xs font-semibold text-gray-200">
                                     Match: {item.confidence?.toFixed(1)}%
                                 </span>
                             </div>
@@ -179,7 +178,6 @@ export default function AnalysisResult({ analysis }) {
                     )}
                 </div>
             </div>
-            <FeedbackCard/>
         </div>
     );
 }
