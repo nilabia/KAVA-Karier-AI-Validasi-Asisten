@@ -182,10 +182,6 @@ const UserService = {
     );
     if (result.rows.length === 0) throw new NotFoundError('Email not found');
 
-    if (result.rows[0].password === null) {
-      throw new ClientError('This account uses Google login and has no password. Please set a password first via your profile.', 400);
-    }
-
     const rawToken = crypto.randomBytes(32).toString('hex');
     const hashedToken = hashToken(rawToken);
     const expires = new Date(Date.now() + 60 * 60 * 1000); 
