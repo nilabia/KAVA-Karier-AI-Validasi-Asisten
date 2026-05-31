@@ -31,7 +31,7 @@ export default function useProfile() {
                 setUser({
                     name: result.data.user.name,
                     email: result.data.user.email,
-                    loginMethod: result.data.user.hasPassword === false ? "google" : "email"
+                    loginMethod: result.data.user.has_password === false ? "google" : "email"
                 });
                 setTempName(result.data.user.name);
             } else {
@@ -103,8 +103,7 @@ export default function useProfile() {
                 localStorage.clear();
                 navigate("/auth/login", { replace: true });
             } else {
-                // INI PESAN DARI BACKEND UNTUK AKUN GOOGLE YANG BELUM PUNYA PASSWORD
-                if (data.message === "Use PUT /users/set-password to set your password first") {
+                if (data.message === "Use POST /users/password to set your password first") {
                     setModalError(
                         "Akun ini belum memiliki password. Silakan gunakan metode Via Email untuk membuat password terlebih dahulu."
                     );

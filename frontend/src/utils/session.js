@@ -13,10 +13,10 @@ export const handleExpiredSession = (message, status) => {
     const isExpiredSession =
         status === 401 &&
         (
-            lowerMessage.includes("token expired") ||
+            lowerMessage.includes("expired token") ||
             lowerMessage.includes("jwt expired") ||
-            lowerMessage.includes("unauthorized") ||
-            lowerMessage.includes("invalid token")
+            lowerMessage.includes("invalid token") ||
+            lowerMessage.includes("invalid signature")
         );
 
     if (isExpiredSession) {

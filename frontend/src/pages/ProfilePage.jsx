@@ -135,34 +135,28 @@ export default function ProfilePage() {
                             <div className="w-28 hidden sm:block" />
                         </div>
                         
-                        {user.loginMethod !== "google" ? (
-                            <div className={rowContainerClass}>
-                                <div className={infoGroupClass}>
-                                    <div className={iconWrapperClass}>
-                                        <FaLock size={17} />
-                                    </div>
-                                    <div>
-                                        <p className={labelClass}>Password</p>
-                                        <p className="text-base font-medium mt-1 text-white/90">********</p>
-                                    </div>
+                        <div className={rowContainerClass}>
+                            <div className={infoGroupClass}>
+                                <div className={iconWrapperClass}>
+                                    <FaLock size={17} />
                                 </div>
-
-                                <div className="mt-2 sm:mt-0 pl-14 sm:pl-0">
-                                    <button
-                                    onClick={() => setActiveModal("passwordMethod")}
-                                    className={buttonActionClass}
-                                    >
-                                        <FaPen size={10} />
-                                        <span>Ubah Password</span>
-                                    </button>
+                                <div>
+                                    <p className={labelClass}>Password</p>
+                                    <p className="text-base font-medium mt-1 text-white/90">********</p>
                                 </div>
                             </div>
-                            ) : (
-                                <div className="text-xs text-gray-400 italic bg-blue-950/20 p-3 rounded-xl border border-blue-900/30">
-                                    Akun Anda terhubung dengan Google. Pengaturan password dapat dilakukan melalui dashboard Google Akun Anda.
-                                </div>
-                            )}
+
+                            <div className="mt-2 sm:mt-0 pl-14 sm:pl-0">
+                                <button
+                                onClick={() => setActiveModal("passwordMethod")}
+                                className={buttonActionClass}
+                                >
+                                    <FaPen size={10} />
+                                    <span>Ubah Password</span>
+                                </button>
+                            </div>
                         </div>
+                    </div>
                 </section>
 
                 <section className="bg-red-900/20 border border-red-500/20 rounded-2xl p-6 backdrop-blur-md shadow-xl">

@@ -8,7 +8,7 @@ const handleResponse = async (response) => {
     const data = await response.json();
 
     if (handleExpiredSession(data.message, response.status)) {
-        throw new Error("Sesi login berakhir. Silakan login kembali.");
+        return;
     }
     
     if (!response.ok) {

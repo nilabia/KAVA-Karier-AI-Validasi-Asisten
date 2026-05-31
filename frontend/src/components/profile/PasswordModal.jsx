@@ -1,5 +1,4 @@
 import { FaLock } from "react-icons/fa";
-import PropTypes from "prop-types";
 import { useState } from "react";
 
 export default function PasswordModal({ isOpen, onClose, onSubmit, error, loading, formStates }) {
@@ -88,19 +87,3 @@ export default function PasswordModal({ isOpen, onClose, onSubmit, error, loadin
         </div>
     );
 }
-
-PasswordModal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    error: PropTypes.string,
-    loading: PropTypes.bool,
-    formStates: PropTypes.shape({
-        oldPassword: PropTypes.string.isRequired,
-        newPassword: PropTypes.string.isRequired,
-        confirmPassword: PropTypes.string.isRequired,
-        setOldPassword: PropTypes.func.isRequired,
-        setNewPassword: PropTypes.func.isRequired,
-        setConfirmPassword: PropTypes.func.isRequired,
-    }).isRequired
-};

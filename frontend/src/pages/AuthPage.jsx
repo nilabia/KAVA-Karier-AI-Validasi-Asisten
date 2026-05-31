@@ -5,7 +5,7 @@ import { loginWithGoogle } from '../services/auth';
 import { FcGoogle } from 'react-icons/fc';
 import PropTypes from "prop-types";
 
-export default function AuthPage({ type = "signin" }) {
+export default function AuthPage() {
     const [step, setStep] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -90,8 +90,8 @@ export default function AuthPage({ type = "signin" }) {
                             <GoogleLogin
                                 onSuccess={handleGoogleSuccess}  
                                 onError={() => setErrorMessage("Login Google gagal.")}
-                                useOneTap 
-                                width="375px"
+                                useOneTap={false} 
+                                width="375"
                                 disabled={isLoading || isGoogleLoading}
                             />
                         </div>
@@ -122,12 +122,4 @@ export default function AuthPage({ type = "signin" }) {
             </div>
         </div>
     );
-}
-
-AuthPage.propTypes = {
-    type: PropTypes.oneOf([
-        "signin",
-        "signup",
-        "register"
-    ])
 }
