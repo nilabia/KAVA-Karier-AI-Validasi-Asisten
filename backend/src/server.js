@@ -13,6 +13,8 @@ const fs = require('fs');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 
 const globalLimiter = rateLimit({
@@ -36,7 +38,17 @@ const otpLimiter = rateLimit({
 app.use(globalLimiter);
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    const allowed = [
+      'http://localhost:5173',
+      process.env.FRONTEND_URL,
+    ].filter(Boolean);
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
@@ -80,11 +92,8 @@ app.use((err, req, res, next) => {
 
 app.use(errorMiddleware);
 
-const HOST = process.env.HOST;
-const PORT = process.env.PORT;
-
-app.listen(PORT, HOST, () => {
-  console.log(`KAVA Backend is running at http://${HOST}:${PORT}`);
+app.listen(process.env.PORT, process.env.HOST, () => {
+  console.log('KAVA Backend is running');
 });
 
 module.exports = app;
