@@ -89,7 +89,7 @@ export default function AuthPage() {
                             />
                         </div>
 
-\                        <div className={`absolute inset-0 opacity-0 z-10 flex justify-center items-center
+                        <div className={`absolute inset-0 opacity-0 z-10 flex justify-center items-center
                             ${(isLoading || isGoogleLoading) ? "pointer-events-none" : "cursor-pointer"}`}
                         >
                             <GoogleLogin

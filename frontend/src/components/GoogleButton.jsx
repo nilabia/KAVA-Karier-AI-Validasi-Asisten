@@ -20,7 +20,7 @@ export default function GoogleButton({ onClick, disabled, text = "Continue with 
 
         <div className="relative flex h-full w-full items-center justify-between">
 
-            <div className="h-5 w-5 min-w-[20px] ml-2.5 group-disabled:opacity-38">
+            <div className="h-5 w-5 min-w-[20px] ml-2 group-disabled:opacity-38">
             <svg
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ export default function GoogleButton({ onClick, disabled, text = "Continue with 
             </svg>
             </div>
 
-            <span className="flex-grow overflow-hidden text-base mr-8 font-bold group-disabled:opacity-38 text-center">
+            <span className="flex-grow overflow-hidden text-base font-bold group-disabled:opacity-38 text-center">
                 {text}
             </span>
         </div>

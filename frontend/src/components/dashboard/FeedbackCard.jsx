@@ -2,7 +2,7 @@ import { FaCommentDots } from "react-icons/fa6";
 
 export default function FeedbackCard() {
     return (
-        <div className="mt-10 border border-yellow-400 rounded-3xl bg-yellow-100/80 p-6 md:p-8 shadow-sm">
+        <div className="mt-10 border border-yellow-400 rounded-3xl bg-amber-200 p-6 md:p-8 shadow-sm">
             <div className="text-center">
                 <h2 className="flex items-center justify-center gap-3 text-lg md:text-xl font-black text-[#0b1e42]">
                     <FaCommentDots className="text-[#0b1e42] text-xl md:text-2xl" size={22} />
