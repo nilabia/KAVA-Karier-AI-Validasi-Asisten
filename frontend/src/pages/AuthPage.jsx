@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { loginWithGoogle } from '../services/auth';
 import { FcGoogle } from 'react-icons/fc';
-import GoogleButton from "../components/GoogleButton";
+import GoogleButton from "../components/auth/GoogleButton";
 import PropTypes from "prop-types";
 
 export default function AuthPage() {

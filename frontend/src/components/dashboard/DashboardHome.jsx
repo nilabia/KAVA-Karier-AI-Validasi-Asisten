@@ -4,6 +4,7 @@ import { HiClock } from "react-icons/hi";
 
 export default function DashboardHome({
     history,
+    historyLoading,
     isLoading,
     error,
     onAnalyze,
@@ -42,12 +43,16 @@ export default function DashboardHome({
             <section className="pt-8 border-t border-white/30">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white/90">
                     <HiClock className="text-amber-300" />
-                    Riwayat Analisis Kamu
+                    Riwayat Analisis
                 </h2>
 
-                {history.length === 0 ? (
+                {historyLoading ? (
+                    <p className="tex-gray-400 text-sm italic">
+                        Memuat riwayat analisis....
+                    </p>
+                ) : history.length === 0 ? (
                     <p className="text-gray-400 text-sm italic">
-                        Belum ada riwayat analisis. Silakan unggah CV pertama kamu di atas!
+                        Belum ada riwayat analisis. Silakan unggah CV pertama Anda terlebih dahulu.
                     </p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

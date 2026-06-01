@@ -16,7 +16,7 @@ export default function AnalysisResult({ analysis }) {
             <div>
                 <h1 className="text-xl md:text-2xl font-extrabold text-[#0b1e42] tracking-tight mb-5 flex items-center gap-2">
                     <span className="p-1.5 bg-blue-50 text-[#0b1e42] rounded-lg">🎯</span> 
-                    3 Top Job yang Cocok Buat Kamu
+                    3 Top Job yang Cocok
                 </h1>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

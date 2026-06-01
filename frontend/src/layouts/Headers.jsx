@@ -25,7 +25,7 @@ export default function Headers({ withNav = false }) {
     }, [location.pathname]);
 
 return (
-        <header className="w-full h-16 flex items-center justify-between bg-[#002366] shadow-[0px_0px_30px_0px_rgba(163,214,255,0.817)]">
+        <header className="w-full h-15 flex items-center justify-between bg-[#002366] shadow-[0px_0px_30px_0px_rgba(163,214,255,0.817)]">
             <Link to="/" className="flex items-center">
                 <img 
                     src={logo} 

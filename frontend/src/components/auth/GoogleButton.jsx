@@ -6,10 +6,10 @@ export default function GoogleButton({ onClick, disabled, text = "Continue with 
         type="button"
         onClick={onClick}
         disabled={disabled}
-        className="group relative flex h-10 w-full max-w-[375px] min-w-max items-center justify-center overflow-hidden rounded-full border border-[#747775] bg-white px-3 text-center font-roboto text-sm font-medium tracking-[0.25px] text-[#1f1f1f] transition-all duration-[218ms] select-none vertical-middle whitespace-nowrap
+        className="group relative flex h-10 w-full max-w-[375px] min-w-max items-center justify-center overflow-hidden rounded-full border border-[#747775] bg-white px-3 text-center font-roboto text-sm font-medium tracking-[0.25px] text-[#1f1f1f] transition-all duration-[218ms] select-none align-middle whitespace-nowrap
             hover:shadow-[0_1px_2px_0_rgba(60,64,67,0.30),0_1px_3px_1px_rgba(60,64,67,0.15)]
             focus:outline-none
-            disabled:cursor-default disabled:bg-white/38 disabled:border-[#1f1f1f]/12"
+            disabled:cursor-not-allowed disabled:bg-white disabled:border-[#747775]"
         >
 
         <div className="absolute inset-0 bg-[#303030] opacity-0 transition-opacity duration-[218ms] 
@@ -20,7 +20,7 @@ export default function GoogleButton({ onClick, disabled, text = "Continue with 
 
         <div className="relative flex h-full w-full items-center justify-between">
 
-            <div className="h-5 w-5 min-w-[20px] ml-2 group-disabled:opacity-38">
+            <div className="h-5 w-5 min-w-[20px] ml-2">
             <svg
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ export default function GoogleButton({ onClick, disabled, text = "Continue with 
             </svg>
             </div>
 
-            <span className="flex-grow overflow-hidden text-base font-bold group-disabled:opacity-38 text-center">
+            <span className="flex-grow overflow-hidden text-base font-bold text-center">
                 {text}
             </span>
         </div>

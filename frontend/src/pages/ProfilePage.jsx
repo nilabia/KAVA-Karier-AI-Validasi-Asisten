@@ -159,7 +159,7 @@ export default function ProfilePage() {
                     </div>
                 </section>
 
-                <section className="bg-red-900/20 border border-red-500/20 rounded-2xl p-6 backdrop-blur-md shadow-xl">
+                <section className="bg-red-300/20 border border-red-500/60 rounded-2xl p-6 backdrop-blur-md shadow-xl">
                     <h3 className="text-2xl font-bold text-red-300 mb-2">
                         ZONA BAHAYA
                     </h3>

@@ -19,11 +19,11 @@ export default function LandingPage() {
             <h1 className="text-5xl md:text-6xl font-bold text white max-w-3xl leading-tight mb-6 text-white">
                 Temukan
                 <span className="text-yellow-300"> Karier yang Tepat </span>
-                Mulai dari CV-mu!
+                Mulai dari CV Anda!
             </h1>
             <p className="text-white leading-relaxed">
-                Bingung mau kerja di bidang apa? Tenang, KAVA (Karier AI Validasi Asisten) siap bantu!<br/>
-                Cukup upload <span className="bg-yellow-300 px-2 text-[#0b1e42]">CV ATS-mu</span> dan biarkan AI kami merekomendasikan role karier yang paling cocok buat kamu.
+                Bingung ingin kerja di bidang apa? Tenang, KAVA (Karier AI Validasi Asisten) siap membantu!<br/>
+                Cukup upload <span className="bg-yellow-300 px-2 text-[#0b1e42]">CV dengan format ATS</span> dan biarkan AI kami merekomendasikan role karier yang paling cocok untuk Anda.
             </p>
             <button
             onClick={handleStart}

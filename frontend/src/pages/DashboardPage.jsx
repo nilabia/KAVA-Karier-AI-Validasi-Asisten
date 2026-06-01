@@ -15,15 +15,21 @@ export default function DashboardPage() {
     const [isLoading, setIsLoading] = useState(false);
     const [analysisResult, setAnalysisResult] = useState(null);
     const [history, setHistory] = useState([]);
+    const [historyLoading, setHistoryLoading] = useState(true);
     const [error, setError] = useState("");
     const [showHistory, setShowHistory] = useState(false);
 
     const fetchHistory = async () => {
         try {
+            setHistoryLoading(true);
+
             const data = await getCVHistory();
             setHistory(data.data.analyses || []);
         } catch (error) {
             console.error(error.message);
+            setHistory([]);
+        } finally {
+            setHistoryLoading(false);
         }
     };
 
@@ -78,7 +84,7 @@ export default function DashboardPage() {
         e.stopPropagation();
 
         const confirmDelete = window.confirm(
-            "Apakah kamu yakin ingin menghapus riwayat analisis ini?"
+            "Apakah Anda yakin ingin menghapus riwayat analisis ini?"
         );
 
         if (!confirmDelete) return;
@@ -117,6 +123,7 @@ export default function DashboardPage() {
                 {!id ? (
                     <DashboardHome
                         history={history}
+                        historyLoading={historyLoading}
                         isLoading={isLoading}
                         error={error}
                         onAnalyze={handleAnalyze}
