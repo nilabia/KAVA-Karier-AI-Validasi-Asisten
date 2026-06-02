@@ -29,7 +29,7 @@ export default function HistoryCard({ item, onOpen, onDelete, compact = false, i
 
                 <button
                     onClick={onDelete}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-rose-400 p-1 rounded transition-all"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-400 p-1 rounded transition-all"
                 >
                     <HiTrash size={14} />
                 </button>
@@ -71,7 +71,7 @@ export default function HistoryCard({ item, onOpen, onDelete, compact = false, i
 
             <button
                 onClick={onDelete}
-                className="absolute top-4 right-4 text-gray-400 hover:text-red-500 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                className="absolute top-4 right-4 text-gray-400 hover:text-red-500 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-200"
                 title="Hapus Riwayat"
             >
                 <HiTrash className="text-base" />

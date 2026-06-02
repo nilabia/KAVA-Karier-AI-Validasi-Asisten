@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { registerUser, verifyEmail } from "../services/auth.js";
-import { MdCheckCircle, MdEmail, MdLock, MdPerson } from 'react-icons/md';
+import { MdCheckCircle, MdEmail, MdLock, MdPerson, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function RegisterForm(){
     const { step, setStep, isLoading, setIsLoading, isGoogleLoading, errorMessage, setErrorMessage } = useOutletContext();
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -63,7 +65,7 @@ export default function RegisterForm(){
         setIsLoading(false);
     };
 
-    const inputClass = "w-full bg-white/28 border border-white/0 rounded-xl py-3 pl-10 pr-6 focus:outline-none focus:ring-1 focus:ring-white focus:bg-white/50 text-[#0b1e42]";
+    const inputClass = "w-full bg-white/28 border border-white/0 rounded-xl py-3 pl-10 pr-10 focus:outline-none focus:ring-1 focus:ring-white focus:bg-white/50 text-[#0b1e42]";
     const iconClass = "absolute left-3 top-1/2 -translate-y-1/2 text-white/80";
 
     return ( 
@@ -128,7 +130,7 @@ export default function RegisterForm(){
                                     <input
                                         id="password"
                                         name="password"
-                                        type="password"
+                                        type={showPassword ? "text" : "password"}
                                         value={formData.password}
                                         minLength={8}
                                         className={inputClass}
@@ -136,10 +138,22 @@ export default function RegisterForm(){
                                         readOnly={step === 2}
                                         required={step === 1}
                                         />
-                                        {step === 2 && (
+                                        {step === 2 ? (
                                             <MdCheckCircle
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-green-300"
                                             size={17} />
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors"
+                                            >
+                                                {showPassword ? (
+                                                    <MdVisibilityOff size={17} />
+                                                ) : (
+                                                    <MdVisibility size={17} />
+                                                )}
+                                            </button>
                                         )}
                                 </div>
                             </div>
@@ -152,7 +166,7 @@ export default function RegisterForm(){
                                     <input
                                         id="confirmPassword"
                                         name="confirmPassword"
-                                        type="password"
+                                        type={showConfirmPassword ? "text" : "password"}
                                         value={formData.confirmPassword}
                                         minLength={8}
                                         className={inputClass}
@@ -160,10 +174,22 @@ export default function RegisterForm(){
                                         disabled={step === 2}
                                         required={step === 1}
                                         />
-                                        {step === 2 && (
+                                        {step === 2 ? (
                                             <MdCheckCircle
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-green-300"
                                             size={17} />
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors"
+                                            >
+                                                {showConfirmPassword ? (
+                                                    <MdVisibilityOff size={17} />
+                                                ) : (
+                                                    <MdVisibility size={17} />
+                                                )}
+                                            </button>
                                         )}
                                 </div>
                             </div>

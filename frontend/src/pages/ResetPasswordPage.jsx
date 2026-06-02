@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FaLock } from "react-icons/fa";
+import { MdLock, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { resetPassword } from "../services/auth";
 
 export default function ResetPasswordPage() {
@@ -9,7 +9,9 @@ export default function ResetPasswordPage() {
 
     const [token, setToken] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [showNewPassword, setShowNewPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
@@ -79,7 +81,7 @@ export default function ResetPasswordPage() {
         <div className="min-h-screen flex items-center justify-center px-4 text-white">
             <div className="w-full max-w-md bg-gray-600/10 backdrop-blur-md rounded-[20px] shadow-2xl shadow-[#0b1e42] border border-white/5 p-6">
                 <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                    <FaLock size={20} />
+                    <MdLock size={20} />
                     Lupa Password
                 </h2>
 
@@ -104,30 +106,50 @@ export default function ResetPasswordPage() {
                         <label className="block text-sm text-gray-300 mb-1">
                             Password Baru
                         </label>
-                        <input
-                            type="password"
-                            minLength={8}
-                            required
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            className="w-full p-2.5 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
-                            disabled={loading || !!successMessage}
-                        />
+                        <div className="relative">
+                            <input
+                                type={showNewPassword ? "text" : "password"}
+                                minLength={8}
+                                required
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                className="w-full p-2.5 pr-10 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
+                                disabled={loading || !!successMessage}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+                                disabled={loading || !!successMessage}
+                            >
+                                {showNewPassword ? <MdVisibilityOff size={17} /> : <MdVisibility size={17} />}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-sm text-gray-300 mb-1">
                             Konfirmasi Password Baru
                         </label>
-                        <input
-                            type="password"
-                            minLength={8}
-                            required
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full p-2.5 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
-                            disabled={loading || !!successMessage}
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                minLength={8}
+                                required
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="w-full p-2.5 pr-10 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
+                                disabled={loading || !!successMessage}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white"
+                                disabled={loading || !!successMessage}
+                            >
+                                {showConfirmPassword ? <MdVisibilityOff size={17} /> : <MdVisibility size={17} />}
+                            </button>
+                        </div>
                     </div>
 
                     <button

@@ -135,6 +135,7 @@ export default function DashboardPage() {
                         <DashboardSidebar
                             file={file}
                             history={history}
+                            historyLoading={historyLoading}
                             activeId={id}
                             showHistory={showHistory}
                             setShowHistory={setShowHistory}

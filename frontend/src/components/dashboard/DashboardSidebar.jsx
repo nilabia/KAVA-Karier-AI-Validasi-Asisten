@@ -1,12 +1,22 @@
+import React, { useState, useMemo } from "react";
 import FileUploader from "./FileUploader.jsx";
 import HistoryCard from "./HistoryCard.jsx";
 import { HiDocumentText, HiClock } from "react-icons/hi";
 import { FaBars } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.mjs',
+    import.meta.url,
+).toString();
 
 export default function DashboardSidebar({
     file,
     history,
+    historyLoading,
     activeId,
     showHistory,
     setShowHistory,
@@ -14,6 +24,16 @@ export default function DashboardSidebar({
     onOpenHistory,
     onDeleteHistory,
 }) {
+    const [numPages, setNumPages] = useState(null);
+
+    const fileUrl = useMemo(() => {
+        if (!file) return null;
+        return URL.createObjectURL(file);
+    }, [file]); 
+    function onDocumentLoadSuccess({ numPages }) {
+        setNumPages(numPages);
+    }
+
     return (
         <aside
             className="
@@ -38,14 +58,33 @@ export default function DashboardSidebar({
                         {file?.name || "Arsip File Terpilih"}
                     </p>
 
-                    {file ? (
-                        <iframe
-                            src={URL.createObjectURL(file)}
-                            title="Preview CV"
-                            className="w-full h-56 rounded-xl bg-white shadow-inner"
-                        />
+                    {fileUrl ? (
+                        <div className="w-full h-56 overflow-y-auto rounded-xl bg-black/60 shadow-inner flex justify-center p-2 CustomScrollbar">
+                            <Document
+                                file={fileUrl}
+                                onLoadSuccess={onDocumentLoadSuccess}
+                                loading={
+                                    <div className="text-xs text-gray-500 flex items-center justify-center h-full py-10">
+                                        Memuat preview...
+                                    </div>
+                                }
+                                error={
+                                    <div className="text-xs text-red-500 flex flex-col items-center justify-center h-full py-10 gap-1">
+                                        <span>Gagal memuat PDF.</span>
+                                        <span className="text-[10px] text-gray-400">Pastikan file tidak korup</span>
+                                    </div>
+                                }
+                            >
+                                <Page 
+                                    pageNumber={1} 
+                                    width={220} 
+                                    renderTextLayer={false} 
+                                    renderAnnotationLayer={false} 
+                                />
+                            </Document>
+                        </div>
                     ) : (
-                        <div className="h-28 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center justify-center p-3 text-xs text-gray-400">
+                        <div className="h-28 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center italic justify-center p-3 text-xs text-gray-400">
                             <span>
                                 Pratinjau fisik PDF hanya aktif setelah upload baru.
                             </span>
@@ -81,7 +120,11 @@ export default function DashboardSidebar({
                     </h3>
 
                     <div className="space-y-2 pr-1">
-                        {history.length === 0 ? (
+                        {historyLoading ? (
+                            <p className="text-xs text-gray-400 italic">
+                                Memuat riwayat....
+                            </p>
+                            ) : history.length === 0 ? (
                             <p className="text-xs text-gray-400 italic">
                                 Belum ada riwayat lain.
                             </p>
@@ -103,7 +146,7 @@ export default function DashboardSidebar({
                     </div>
 
                     <p className="text-xs italic text-red-300 mt-4 leading-relaxed">
-                        Riwayat hanya menyimpan hasil analisis CV, bukan preview PDF atau file asli.
+                        * Riwayat hanya menyimpan hasil analisis CV, bukan preview PDF atau file asli.
                     </p>
                 </div>
             </div>

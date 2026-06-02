@@ -1,8 +1,21 @@
-import { FaLock } from "react-icons/fa";
+import { MdLock, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { useState } from "react";
 
 export default function PasswordModal({ isOpen, onClose, onSubmit, error, loading, formStates }) {
+    const [showPassword, setShowPassword] = useState({
+        old: false,
+        new: false,
+        confirm: false,
+    });
+
     if (!isOpen) return null;
+
+    const togglePassword = (field) => {
+        setShowPassword((prev) => ({
+            ...prev,
+            [field]: !prev[field],
+        }));
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -10,9 +23,10 @@ export default function PasswordModal({ isOpen, onClose, onSubmit, error, loadin
                 className="fixed inset-0 bg-gray-700/20 backdrop-blur-sm"
                 onClick={onClose}
             />
+
             <div className="relative w-full max-w-md bg-[#152d58] border-white/10 p-6 rounded-2xl shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 text-white">
                 <h3 className="text-xl font-bold mb-4 flex items-center text-gray-300">
-                    <FaLock className="mr-2" size={18}/>
+                    <MdLock className="mr-2" size={18} />
                     Ubah Password
                 </h3>
                 
@@ -27,42 +41,87 @@ export default function PasswordModal({ isOpen, onClose, onSubmit, error, loadin
                         <label className="block text-xs text-gray-400 mb-1">
                             Password Lama
                         </label>
-                        <input
-                            className="w-full p-2.5 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
-                            type="password"
-                            required
-                            minLength={8}
-                            value={formStates.oldPassword}
-                            onChange={(e) => formStates.setOldPassword(e.target.value)}
-                        />
+
+                        <div className="relative">
+                            <input
+                                className="w-full p-2.5 pr-10 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
+                                type={showPassword.old ? "text" : "password"}
+                                required
+                                minLength={8}
+                                value={formStates.oldPassword}
+                                onChange={(e) => formStates.setOldPassword(e.target.value)}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => togglePassword("old")}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                            >
+                                {showPassword.old ? (
+                                    <MdVisibilityOff size={18} />
+                                ) : (
+                                    <MdVisibility size={18} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-xs text-gray-400 mb-1">
                             Password Baru
                         </label>
-                        <input
-                            className="w-full p-2.5 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
-                            type="password"
-                            required
-                            minLength={8}
-                            value={formStates.newPassword}
-                            onChange={(e) => formStates.setNewPassword(e.target.value)}
-                        />
+
+                        <div className="relative">
+                            <input
+                                className="w-full p-2.5 pr-10 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
+                                type={showPassword.new ? "text" : "password"}
+                                required
+                                minLength={8}
+                                value={formStates.newPassword}
+                                onChange={(e) => formStates.setNewPassword(e.target.value)}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => togglePassword("new")}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                            >
+                                {showPassword.new ? (
+                                    <MdVisibilityOff size={18} />
+                                ) : (
+                                    <MdVisibility size={18} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-xs text-gray-400 mb-1">
                             Konfirmasi Password Baru
                         </label>
-                        <input
-                            className="w-full p-2.5 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
-                            type="password"
-                            required
-                            minLength={8}
-                            value={formStates.confirmPassword}
-                            onChange={(e) => formStates.setConfirmPassword(e.target.value)}
-                        />
+
+                        <div className="relative">
+                            <input
+                                className="w-full p-2.5 pr-10 bg-[#002366]/50 border border-white/30 rounded-xl text-white outline-none focus:border-blue-500 text-sm"
+                                type={showPassword.confirm ? "text" : "password"}
+                                required
+                                minLength={8}
+                                value={formStates.confirmPassword}
+                                onChange={(e) => formStates.setConfirmPassword(e.target.value)}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => togglePassword("confirm")}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                            >
+                                {showPassword.confirm ? (
+                                    <MdVisibilityOff size={18} />
+                                ) : (
+                                    <MdVisibility size={18} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <div className="flex justify-end space-x-3 pt-2">
@@ -74,10 +133,11 @@ export default function PasswordModal({ isOpen, onClose, onSubmit, error, loadin
                         >
                             Batal
                         </button>
+
                         <button
-                        type="submit"
-                        disabled={loading}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-sm font-medium text-white transition-colors"
+                            type="submit"
+                            disabled={loading}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-sm font-medium text-white transition-colors"
                         >
                             {loading ? "Memproses..." : "Simpan & Login Ulang"}
                         </button>

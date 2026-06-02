@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { loginUser } from "../services/auth.js";
 import ForgotPasswordModal from "../components/profile/ForgotPasswordModal.jsx";
-import { MdEmail, MdLock } from 'react-icons/md';
+import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function LoginForm(){
     const [email, setEmail] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [isForgotModal, setIsForgotModal] = useState(false);
     const navigate = useNavigate();
     const { isLoading, setIsLoading, isGoogleLoading, errorMessage, setErrorMessage } = useOutletContext();
@@ -31,7 +32,7 @@ export default function LoginForm(){
         setIsLoading(false);
     }
 
-    const inputClass = "w-full bg-white/28 border border-white/0 rounded-xl py-3 pl-10 pr-6 focus:outline-none focus:ring-1 focus:ring-white focus:bg-white/50 text-[#0b1e42]";
+    const inputClass = "w-full bg-white/28 border border-white/0 rounded-xl py-3 pl-10 pr-10 focus:outline-none focus:ring-1 focus:ring-white focus:bg-white/50 text-[#0b1e42]";
     const iconClass = "absolute left-3 top-1/2 -translate-y-1/2 text-white/80";
 
     return(
@@ -72,11 +73,24 @@ export default function LoginForm(){
                             <input
                                 id="password"
                                 name="password"
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 minLength={8}
                                 className={inputClass}
                                 required 
                             />
+
+                            <button type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors"
+                            tabIndex={-1}
+                            >
+                                {showPassword ? (
+                                    <MdVisibilityOff size={17}/>
+                                ) : (
+                                    <MdVisibility size={17} />
+                                )}
+
+                            </button>
                         </div>
                     </div>
 
