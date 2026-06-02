@@ -4,17 +4,23 @@ import logo from "../assets/logo.png";
 import { FaSignOutAlt, FaUserCircle, FaUser } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import PropTypes from "prop-types";
+import { getProfile } from "../services/auth.js";
 
 export default function Headers({ withNav = false }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const isLoggedIn = !!localStorage.getItem("accessToken");
-    const shouldShowNav = withNav && isLoggedIn;
+    const shouldShowNav = isLoggedIn;
+
+    const [user, setUser] = useState({
+        name: localStorage.getItem("userName") || ""
+    });
     
     const handleLogout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userName");
         navigate("/", {
             replace: true
         });
@@ -24,6 +30,37 @@ export default function Headers({ withNav = false }) {
         setIsMenuOpen(false);
     }, [location.pathname]);
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (!shouldShowNav) return;
+
+            const result = await getProfile();
+
+            if (result.status === "success") {
+                const profile = result.data.user || result.data;
+
+                setUser(profile);
+                localStorage.setItem("userName", profile.name);
+            }
+        };
+
+        fetchUser();
+    }, [shouldShowNav]);
+
+    useEffect(() => {
+        const handleUserNameUpdated = () => {
+            setUser({
+                name: localStorage.getItem("userName") || ""
+            });
+        };
+
+        window.addEventListener("userNameUpdated", handleUserNameUpdated);
+
+        return () => {
+            window.removeEventListener("userNameUpdated", handleUserNameUpdated);
+        };
+    }, []);
+    
 return (
         <header className="w-full h-15 flex items-center justify-between bg-[#002366] shadow-[0px_0px_30px_0px_rgba(163,214,255,0.817)]">
             <Link to="/" className="flex items-center">
@@ -37,13 +74,17 @@ return (
             {shouldShowNav && (
                 <div className="relative mr-6">
                     <button
-                        className="p-2 flex items-center text-white hover:text-blue-300 transition-colors focus:outline-none"
+                        className="p-2 flex items-center gap-2 text-white hover:text-blue-300 transition-colors focus:outline-none"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         aria-label="User Menu"
                     >
-                        <FaUserCircle size={30} className="md:size[30px]" />
-                    </button>
+                        <span className="hidden sm:block text-sm font-semibold max-w-32 truncate">
+                            {user?.name}
+                        </span>
 
+                        <FaUserCircle size={30} />
+                    </button>
+                    
                     {isMenuOpen && (
                         <div>
                             <div

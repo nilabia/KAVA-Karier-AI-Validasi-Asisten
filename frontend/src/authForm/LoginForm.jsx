@@ -25,6 +25,14 @@ export default function LoginForm(){
         if (result.status === "success") {
             localStorage.setItem("accessToken", result.data.accessToken);
             localStorage.setItem("refreshToken", result.data.refreshToken);
+
+            const profile = await getProfile();
+
+            if (profile.status === "success") {
+                const user = profile.data.user || profile.data;
+                localStorage.setItem("userName", user.name);
+            }
+            
             navigate("/dashboard");
         } else {
             setErrorMessage("Email atau Password salah!");
