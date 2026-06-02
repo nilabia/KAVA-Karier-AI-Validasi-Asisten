@@ -2,7 +2,7 @@
 
 > Platform analisis CV berbasis AI untuk prediksi karier dan rekomendasi skill gap.
 
-🔗 **Live Demo:** [https://kava.up.railway.app](https://kava-karier-ai-validasi-asisten.vercel.app)  
+🔗 **Live Demo:** [https://kava-karier-ai-validasi-asisten.vercel.app](https://kava-karier-ai-validasi-asisten.vercel.app/)
 🔗 **Backend API:** [valiant-victory-production-032b.up.railway.app](https://valiant-victory-production-032b.up.railway.app)
 
 ---
