@@ -60,6 +60,11 @@ export default function DashboardPage() {
 
             setAnalysisResult(analysis);
 
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+
             await fetchHistory();
 
             if(analysis?.id) {
@@ -110,6 +115,11 @@ export default function DashboardPage() {
 
     useEffect(() => {
         if (id) {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+            
             fetchAnalysisDetail(id);
         } else {
             setAnalysisResult(null);
