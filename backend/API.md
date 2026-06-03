@@ -404,14 +404,6 @@ Error `404` - email not found:
 }
 ```
 
-Error `400` - Google account:
-```json
-{
-  "status": "failed",
-  "message": "This account uses Google login. Please set a password first via the profile page."
-}
-```
-
 ---
 
 ### 13. Reset Password
@@ -466,9 +458,11 @@ Response `201`:
       "id": "uuid",
       "user_id": "uuid",
       "top_roles": [
-        { "rank": 1, "role": "Software & Web Development", "confidence": 74.91 },
-        { "rank": 2, "role": "Data Science & Engineering", "confidence": 11.56 },
-        { "rank": 3, "role": "Agriculture", "confidence": 4.68 }
+        "top_roles": [
+          { "rank": 1, "role": "Software & Web Development", "final_score": 74.91, "dl_confidence": 68.5, "keyword_score": 81.3 },
+          { "rank": 2, "role": "Data Science & Engineering", "final_score": 11.56, "dl_confidence": 10.2, "keyword_score": 12.9 },
+          { "rank": 3, "role": "Agriculture", "final_score": 4.68, "dl_confidence": 3.1, "keyword_score": 6.2 }
+      ],
       ],
       "skill_gap": {
         "coverage_pct": 55,
