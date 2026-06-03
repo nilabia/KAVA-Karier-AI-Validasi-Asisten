@@ -30,12 +30,31 @@ async function analyzeCV(req, res, next) {
 
     const extractedData = extractJson.data;
 
+    const parts = [];
+    if (extractedData.skills) {
+      for (let i = 0; i < 4; i++) parts.push(extractedData.skills);
+    }
+    if (extractedData.summary) {
+      parts.push(extractedData.summary);
+    }
+    if (extractedData.experience) {
+      parts.push(extractedData.experience.substring(0, 800));
+    }
+    if (extractedData.highlights) {
+      parts.push(extractedData.highlights.substring(0, 300));
+    }
+    if (extractedData.education) {
+      parts.push(extractedData.education.substring(0, 300));
+    }
+    const combinedText = parts.join(' ') || 'Tidak ada teks yang dapat diekstrak';
+
     const modelPayload = {
-      text: extractedData.summary || extractedData.highlights || extractedData.skills || '',
+      text: combinedText,
       skills_raw: (extractedData.skills_list || []).join(', '),
       experience_years: Math.min(Number(extractedData.experience_years) || 0, 40),
       cert_count: (extractedData.certification || []).length,
       has_education: extractedData.education ? 1 : 0,
+      has_highlights: extractedData.highlights ? 1 : 0,
     };
 
     console.log('[AI Model] Sending payload:', modelPayload);
