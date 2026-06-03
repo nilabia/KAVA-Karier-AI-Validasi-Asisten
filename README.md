@@ -73,7 +73,7 @@ Backend API — Express.js (Railway)
 
 | Komponen | Teknologi | Platform |
 |---|---|---|
-| Frontend | React.js + Vite + Tailwind CSS | Railway |
+| Frontend | React.js + Vite + Tailwind CSS | Vercel |
 | Backend API | Node.js + Express.js | Railway |
 | CV Extractor | Python + Flask + PyMuPDF | Railway |
 | AI Model | TensorFlow + Mistral API | Hugging Face |
