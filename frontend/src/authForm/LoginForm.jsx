@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginUser } from "../services/auth.js";
+import { loginUser, getProfile } from "../services/auth.js";
 import ForgotPasswordModal from "../components/profile/ForgotPasswordModal.jsx";
 import { MdEmail, MdLock, MdVisibility, MdVisibilityOff } from 'react-icons/md';
 import { useNavigate, useOutletContext } from "react-router-dom";
