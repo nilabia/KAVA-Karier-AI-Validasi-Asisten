@@ -268,7 +268,7 @@ FLASK_DEBUG=false
 | Clara Angelin Pijoh | AI Engineer |
 | Parulian Dwi Reslia Simbolon | AI Engineer |
 | Ferarine Chang | Data Scientist |
-| [Data Scientist 2] | Data Scientist |
+| Clarissa Halim| Data Scientist |
 
 ---
 
