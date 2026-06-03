@@ -64,8 +64,14 @@ export default function useProfile() {
                     ...prev,
                     name: tempName
                 }));
+
+                localStorage.setItem("userName", tempName);
+
+                window.dispatchEvent(new Event("userNameUpdated"));
+                
                 setEditName(false);
                 alert("Nama berhasil diperbarui!");
+
             } else {
                 alert(data.message || "Gagal memperbarui nama.");
             }
