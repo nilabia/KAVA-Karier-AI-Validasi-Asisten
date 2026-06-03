@@ -44,7 +44,7 @@ export default function AnalysisResult({ analysis }) {
                             <div className="flex items-center gap-1.5 mt-auto">
                                 <div className={`h-2 w-2 rounded-full ${index === 0 ? "bg-emerald-400" : "bg-emerald-500"}`}></div>
                                 <span className="text-xs font-semibold text-gray-200">
-                                    Match: {item.confidence?.toFixed(1)}%
+                                    Match: {(item.final_score ?? 0).toFixed(1)}%
                                 </span>
                             </div>
                         </div>
