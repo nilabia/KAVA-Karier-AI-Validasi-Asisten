@@ -6,6 +6,8 @@
 
 🔗 **Backend API:** [valiant-victory-production-032b.up.railway.app](https://valiant-victory-production-032b.up.railway.app)
 
+🔗 **Dashboard Streamlit:** [kava-analytics.streamlit.app](https://kava-analytics.streamlit.app/)
+
 ---
 
 ## Daftar Isi
