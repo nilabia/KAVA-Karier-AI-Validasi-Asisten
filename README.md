@@ -8,6 +8,8 @@
 
 🔗 **Dashboard Streamlit:** [kava-analytics.streamlit.app](https://kava-analytics.streamlit.app/)
 
+🔗 **Streamlit Github Repo:** [github.com/clrsahlim/KAVA-Streamlit](https://github.com/clrsahlim/KAVA-Streamlit)
+
 ---
 
 ## Daftar Isi
