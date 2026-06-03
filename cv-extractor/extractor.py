@@ -64,7 +64,7 @@ SECTION_PATTERNS = {
         r"(?:skills?|technical\s+skills?|core\s+skills?|competencies"
         r"|expertise|proficiencies|technologies|tools?"
         r"|areas\s+of\s+expertise"
-        r"|keahlian|keterampilan|kompetensi|kemampuan)"
+        r"|keahlian|keterampilan|kompetensi|kemampuan|skill)"
     ),
 }
 
@@ -125,7 +125,7 @@ def parse_skills_list(skills_text: str) -> list:
     return [s.strip().lower() for s in items if s.strip() and len(s.strip()) > 1]
 
 
-MONTHS_PATTERN = r"(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)"
+MONTHS_PATTERN = r"(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec|januari|februari|maret|mei|juni|juli|agustus|oktober|desember)"
 
 DATE_RANGE_REGEX = re.compile(
     rf"({MONTHS_PATTERN}\s+\d{{4}}|\d{{1,2}}/\d{{2,4}}|\b(?:19[5-9]\d|20[0-2]\d)\b)"
@@ -143,12 +143,27 @@ def parse_date(s: str):
     if "/" in s:
         parts = s.split("/")
         m, y = parts[0], parts[1]
+        if len(y) == 2:
+            y = "20" + y if int(y) < 50 else "19" + y
+            
         return int(y) + (int(m) / 12 if m.isdigit() else 0)
     m_y = re.search(rf"({MONTHS_PATTERN})\s+(\d{{4}})", s)
     if m_y:
-        m_map = {m: i+1 for i, m in enumerate(
-            ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"])}
-        return int(m_y.group(2)) + m_map[m_y.group(1)[:3]] / 12
+        m_str = m_y.group(1).lower()
+        if m_str.startswith("jan"): m_idx = 1
+        elif m_str.startswith("feb"): m_idx = 2
+        elif m_str.startswith("mar"): m_idx = 3
+        elif m_str.startswith("apr"): m_idx = 4
+        elif m_str.startswith("may") or m_str == "mei": m_idx = 5
+        elif m_str.startswith("jun"): m_idx = 6
+        elif m_str.startswith("jul"): m_idx = 7
+        elif m_str.startswith("aug") or m_str.startswith("agu"): m_idx = 8
+        elif m_str.startswith("sep"): m_idx = 9
+        elif m_str.startswith("oct") or m_str.startswith("okt"): m_idx = 10
+        elif m_str.startswith("nov"): m_idx = 11
+        elif m_str.startswith("dec") or m_str.startswith("des"): m_idx = 12
+        else: m_idx = 1
+        return int(m_y.group(2)) + m_idx / 12
     if re.fullmatch(r"(?:19[5-9]\d|20[0-2]\d)", s):
         return float(s)
     return None
@@ -182,7 +197,7 @@ CERT_REGEX = re.compile(
     r"|(?:[\w\s]{1,30}certification)"
     r"|(?:certificate\s+(?:in\s+)?[\w\s]{2,40})"
     r"|(?:license[d]?\s+(?:in\s+)?[\w\s]{2,30})"
-    r"|\b(?:cpa|cfa|cma|acca|phr|sphr|shrm-cp|shrm-scp|pmp|cissp|cisa|cism|aws|gcp|azure|six\s+sigma|lean\s+six\s+sigma)\b"
+    r"|\b(?:cpa|cfa|cma|acca|phr|sphr|shrm-cp|shrm-scp|pmp|cissp|cisa|cism|aws|gcp|azure|tensorflow|google|meta|cisco|comptia|six\s+sigma|lean\s+six\s+sigma)\b"
     r")",
     re.IGNORECASE
 )

@@ -31,22 +31,19 @@ async function analyzeCV(req, res, next) {
     const extractedData = extractJson.data;
 
     const parts = [];
-    if (extractedData.skills) {
-      for (let i = 0; i < 4; i++) parts.push(extractedData.skills);
-    }
-    if (extractedData.summary) {
-      parts.push(extractedData.summary);
-    }
-    if (extractedData.experience) {
-      parts.push(extractedData.experience.substring(0, 800));
-    }
-    if (extractedData.highlights) {
-      parts.push(extractedData.highlights.substring(0, 300));
-    }
-    if (extractedData.education) {
-      parts.push(extractedData.education.substring(0, 300));
-    }
-    const combinedText = parts.join(' ') || 'Tidak ada teks yang dapat diekstrak';
+if (extractedData.summary) {
+  parts.push(extractedData.summary);
+}
+if (extractedData.experience) {
+  parts.push(extractedData.experience.substring(0, 800));
+}
+if (extractedData.highlights) {
+  parts.push(extractedData.highlights.substring(0, 300));
+}
+if (extractedData.education) {
+  parts.push(extractedData.education.substring(0, 300));
+}
+const combinedText = parts.join(' ') || 'Tidak ada teks yang dapat diekstrak';
 
     const modelPayload = {
       text: combinedText,
