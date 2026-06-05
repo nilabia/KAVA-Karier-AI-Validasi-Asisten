@@ -10,6 +10,10 @@
 
 🔗 **Streamlit Github Repo:** [github.com/clrsahlim/KAVA-Streamlit](https://github.com/clrsahlim/KAVA-Streamlit)
 
+🔗 **Hugging face AI KAVA:** [https://huggingface.co/spaces/parulls/kava-ai-engine](https://huggingface.co/spaces/parulls/kava-ai-engine)
+
+🔗 **Artifacts Model KAVA:** [Tautan Model AI](https://drive.google.com/drive/folders/1vpD8p66A0bX8fvA4HtVyovODLdJMRlaJ)
+
 ---
 
 ## Daftar Isi
