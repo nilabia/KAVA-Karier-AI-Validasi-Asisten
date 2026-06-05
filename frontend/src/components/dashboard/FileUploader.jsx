@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { HiUpload } from "react-icons/hi";
+import { FiUpload } from "react-icons/fi";
 
 export default function FileUploader({ onUpload, compact = false }) {
     const [isDragActive, setIsDragActive] = useState(false);
@@ -75,7 +75,7 @@ export default function FileUploader({ onUpload, compact = false }) {
                     ${compact ? "p-3" : "p-5"} 
                     transition-transform duration-300 group-hover:scale-110
                 `}>
-                    <HiUpload size={60} className={`${compact ? "text-2xl" : "text-4xl"} text-white`} />
+                    <FiUpload size={60} className={`${compact ? "text-2xl" : "text-4xl"} text-white`} />
                 </div>
 
                 <div>
